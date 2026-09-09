@@ -8,6 +8,7 @@
 // shared components -- markup lives in template-parts/, so the CSS is global
 @use 'components/button';
 @use 'components/header-banner';
+@use 'components/navbar';
 
 
 // |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
@@ -80,6 +81,23 @@ a, .btn {
  * compiled (_init-bootstrap.scss imports `containers`) -- redefining it would
  * silently change behaviour anywhere Bootstrap or future markup relies on it.
  */
+/**
+ * Sticky site header -- banner and navbar together.
+ *
+ * Sticky, not fixed, so the header keeps its space in flow and the page below
+ * never jumps. It also means dismissing the banner simply shrinks the header,
+ * with no offset to recalculate anywhere.
+ *
+ * z-index is Bootstrap's own $zindex-sticky (1020) on purpose: an arbitrary
+ * number risks landing above the offcanvas backdrop at 1040, which would leave
+ * the header clickable through the scrim while the menu is open.
+ */
+.drg-header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
 .drg-container-fluid {
     position: relative; // containing block for absolutely positioned children
     width: 100%;

@@ -135,5 +135,20 @@ $fontSizes: (
         mobile: (
             font-size: 14.77 // 12 @390
         )
+    ),
+    /**
+     * Identical to banner-text on desktop; the two diverge only on mobile
+     * (16 vs 12), which is why both keys exist. If those ever converge they
+     * collapse into one.
+     */
+    nav-link: (
+        desktop: (
+            font-size: 18,
+            font-weight: 500,
+            line-height: 1.5
+        ),
+        mobile: (
+            font-size: 19.69 // 16 @390
+        )
     )
 );

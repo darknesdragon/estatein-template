@@ -45,27 +45,91 @@
     
     <?php wp_body_open(); ?>
     
-    <header>
+    <header class="drg-header">
         <?php get_template_part( 'template-parts/header-banner/index' ); ?>
 
-        <nav class="navbar navbar-expand-lg">
+        <?php
+        /**
+         * expand-xl, not expand-lg: logo + four items + the right-area button do
+         * not fit comfortably between 992 and 1200, and 1200 is already the
+         * theme's stacking line everywhere else (see vwStacked in _mixin.scss).
+         */
+        ?>
+        <nav class="navbar navbar-expand-xl drg-navbar">
             <div class="container">
                 <?php
                     if(function_exists('the_custom_logo')) {
                         the_custom_logo();
                     }
                 ?>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <?php
+                /**
+                 * Our icon, not .navbar-toggler-icon.
+                 *
+                 * Bootstrap paints that span with a hardcoded SVG data URI whose
+                 * stroke is baked in as rgba(0,0,0,.55) -- unreadable on the dark
+                 * bar, and unreachable from CSS because it is a background image,
+                 * not a glyph. An inlined heroicon inherits currentColor instead,
+                 * so colour and hover are ordinary CSS.
+                 *
+                 * bars-3-bottom-right matches the comp: the bottom bar measures
+                 * 12px against the other two at 22px, right-aligned.
+                 */
+                ?>
+                <button class="navbar-toggler drg-navbar__toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <?php
+                    get_template_part(
+                        'template-parts/icon',
+                        null,
+                        array(
+                            'name'  => 'heroicons-bars-3-bottom-right',
+                            'class' => 'drg-navbar__toggler-icon',
+                        )
+                    );
+                    ?>
                 </button>
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+                <?php
+                /**
+                 * aria-label, not aria-labelledby.
+                 *
+                 * The panel used to point at an <h5> reading "Offcanvas". That
+                 * heading is gone -- the logo is still visible in the bar behind
+                 * the panel, so repeating it adds nothing -- and a dangling
+                 * labelledby reference makes a screen reader announce an unnamed
+                 * dialog. A literal label has nothing to dangle.
+                 */
+                ?>
+                <div class="offcanvas offcanvas-end drg-navbar__offcanvas" tabindex="-1" id="offcanvasNavbar" aria-label="Main navigation">
+                    <div class="offcanvas-header drg-navbar__offcanvas-header">
+                        <?php
+                        /**
+                         * Same reasoning as the toggler above: Bootstrap's
+                         * .btn-close is a background-image SVG with #000 baked
+                         * in, so `color` cannot touch it and .btn-close-white
+                         * only offers a filter-based invert. Our inlined icon
+                         * takes currentColor directly.
+                         *
+                         * Reuses the x-mark already fetched for the header
+                         * banner -- one icon file, two components.
+                         */
+                        ?>
+                        <button type="button" class="drg-navbar__close" data-bs-dismiss="offcanvas" aria-label="Close menu">
+                            <?php
+                            get_template_part(
+                                'template-parts/icon',
+                                null,
+                                array(
+                                    'name'  => 'heroicons-x-mark',
+                                    'class' => 'drg-navbar__close-icon',
+                                )
+                            );
+                            ?>
+                        </button>
                     </div>
-                    <div class="offcanvas-body">
-                        <ul class="navbar-nav">
-                        <?php 
+                    <div class="offcanvas-body drg-navbar__offcanvas-body">
+                        <ul class="navbar-nav drg-navbar__menu drg-navbar__menu--main">
+                        <?php
                             // Header Main Navigation Menu
                             $args = array(
                                 'theme_location' => 'main_menu',
@@ -74,6 +138,31 @@
                                 'items_wrap'      => '%3$s', // remove ul tag
                             );
                             wp_nav_menu( $args );
+                        ?>
+                        </ul>
+
+                        <?php
+                        /**
+                         * Right-hand slot -- the Contact Us button in this design.
+                         *
+                         * Last in the DOM on purpose: above xl it lands at the far
+                         * right of the flattened row, and below xl it falls to the
+                         * bottom of the offcanvas, which is where it belongs on
+                         * mobile. One order serves both.
+                         *
+                         * An unassigned location renders nothing, so a fresh site
+                         * simply has no button rather than an empty <ul>.
+                         */
+                        ?>
+                        <ul class="navbar-nav drg-navbar__menu drg-navbar__menu--right">
+                        <?php
+                            $right_args = array(
+                                'theme_location' => 'main_menu_right',
+                                'depth'          => 1,
+                                'container'      => '',
+                                'items_wrap'     => '%3$s',
+                            );
+                            wp_nav_menu( $right_args );
                         ?>
                         </ul>
                     </div>
