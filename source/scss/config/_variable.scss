@@ -1,0 +1,260 @@
+@use 'sass:map';
+@use 'sass:math';
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | drgVar v.1.0.2                          | //
+// | last update : 03 / 04 / 2024            | //
+// |_________________________________________| //
+
+$themeUnit: 'vw';
+
+/**
+ * Viewport width the design freezes at.
+ *
+ * Every vw value is capped at whatever it measures here, so a screen wider than
+ * this renders pixel-identical to a $maxViewport-wide one instead of inflating
+ * the whole design. Match it to the anchor the comps were drawn at -- capping
+ * higher lets the layout overshoot its drawn size first, for nothing.
+ *
+ * See vwSize() in _function.scss.
+ */
+$maxViewport: 1920;
+
+// keep in sync with the google font enqueued in inc/functions-style-script.php
+$fontPrimary: 'Manrope', sans-serif;
+
+$desktopBreakpoints: (
+    1920,
+    1199,
+);
+
+$mobileBreakpoints: (
+    767,
+    480
+);
+
+// color example taken from Drago - Petrane Figma
+// https://www.figma.com/design/TAvIMAc18SOhop5Cs9he7t/Petrane?node-id=6-3&node-type=canvas&t=zFVBjA4RSoEmze7h-0
+
+$color: (
+    pumpkin: (
+        default: #F6871F,
+    ),
+    prussian-blue: (
+        default: #003559
+    ),
+    french-grey: (
+        default: #C5C4C9
+    ),
+    dutch-white: (
+        default: #FCE6C4
+    ),
+    anti-flash-white: (
+        default: #E9ECF1
+    ),
+    baby-powder: (
+        default: #F8F4FD
+    ),
+    body: (
+        default: #6A6A6A,
+        50: rgba(106, 106, 106, 0.5),
+    ),
+    pure-white: (
+        default: #FFFFFF,
+        50: rgba(255, 255, 255, 0.5)
+    ),
+    black: (
+        default: #000000
+    ),
+    light-grey: (
+        default: #FBFBFB
+    ),
+    error: (
+        default: #FF1818
+    )
+);
+
+// OPTIONAL - if default using color shade
+
+// $variant: (
+//     blue: (
+//         default: map.get($color, blue, 80),
+//     )
+// );
+
+// $color: map.deep-merge($color, $variant);
+
+// OPTIONAL - end
+
+$fontSizes: (
+    display-1: (
+        desktop: (
+            font-size: 70,
+            font-weight: 800,
+            line-height: 1.1
+        ),
+        mobile: (
+            font-size: 40,
+            text-decoration: underline
+        ),
+        480:(
+            text-transform: uppercase
+        ),
+    ),
+    heading-1: (
+        desktop: (
+            font-size: 48,
+            font-weight: 800,
+            line-height: 1.1
+        ),
+        mobile: (
+            font-size: 32,
+        )
+    ),
+    heading-2: (
+        desktop: (
+            font-size: 40,
+            font-weight: 600,
+            line-height: 1.1
+        ),
+        mobile: (
+            font-size: 24
+        )
+    ),
+    title-1: (
+        desktop: (
+            font-size: 18,
+            font-weight: 700
+        ),
+        mobile: (
+            font-size: 16,
+        )
+    ),
+    body-xl-bold: (
+        desktop: (
+            font-size: 24,
+            font-weight: 600
+        ),
+        mobile: (
+            font-size: 20,
+        )
+    ),
+    body-xl: (
+        desktop: (
+            font-size: 24,
+            line-height: 1.1,
+        ),
+        mobile: (
+            font-size: 14,
+        )
+    ),
+    body-l-bold: (
+        desktop: (
+            font-size: 20,
+            font-weight: 800,
+            line-height: 1.1
+        ),
+        mobile: (
+            font-size: 18
+        )
+    ),
+    body-l: (
+        desktop: (
+            font-size: 20,
+            line-height: 1.1
+        ),
+        mobile: (
+            font-size: 18
+        )
+    ),
+    body-m-medium: (
+        desktop: (
+            font-size: 18,
+            font-weight: 500,
+            line-height: 1.5
+        ),
+        mobile: (
+            font-size: 16
+        )
+    ),
+    body-m: (
+        desktop: (
+            font-size: 18,
+            line-height: 1.5
+        ),
+        mobile: (
+            font-size: 16
+        )
+    ),
+    body-s: (
+        desktop: (
+            font-size: 16
+        ),
+        mobile: (
+            font-size: 16
+        )
+    ),
+    nav-link: (
+        desktop: (
+            font-size: 18,
+        ),
+        1199: (
+            font-size: 24,
+        ),
+        767: (
+            font-size: 32
+        ),
+        mobile: (
+            font-size: 20
+        )
+    ),
+    button: (
+        desktop: (
+            font-size: 18,
+            font-weight: 500,
+            line-height: math.div(28, 18)
+        ),
+        mobile: (
+            font-size: 18
+        )
+    ),
+    form-title: (
+        desktop: (
+            font-size: 18,
+            font-weight: 500
+        ),
+        mobile: (
+            font-size: 16
+        )
+    ),
+    table-header: (
+        desktop: (
+            font-size: 14,
+            font-weight: 500,
+            line-height: math.div(16, 14)
+        ),
+        mobile: (
+            font-size: 14
+        )
+    ),
+    tag-bold: (
+        desktop: (
+            font-size: 14,
+            font-weight: 600,
+            line-height: math.div(16, 14)
+        ),
+        mobile: (
+            font-size: 12
+        )
+    ),
+    tag: (
+        desktop: (
+            font-size: 14,
+            font-weight: 600,
+            line-height: math.div(16, 14)
+        ),
+        mobile: (
+            font-size: 14
+        )
+    )
+);

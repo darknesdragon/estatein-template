@@ -1,0 +1,94 @@
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:color';
+@use '_variable.scss' as var;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | drgFunc v.1.3.1                         | //
+// | last update : 19 / 03 / 2024            | //
+// |_________________________________________| //
+
+// get color from color map
+@function color($colorName, $colorValue: default) {
+    @return map.get(var.$color, $colorName, $colorValue);
+}
+
+// modified known color
+@function colorMod( $color, $lightValue ) {
+    @return color.scale($color, $lightness: $lightValue);
+}
+
+// convert target in px to rem (16)
+@function remSize($number) {
+    @return #{math.div($number, 16)}rem;
+}
+
+/**
+ * Convert a design pixel to vw, frozen above var.$maxViewport.
+ *
+ * The cap is the value measured at $maxViewport, so screens wider than that
+ * render exactly like a $maxViewport one rather than scaling the whole design up.
+ *
+ * Only ever active on the top desktop anchor. A fluid value equals $number px at
+ * its own anchor, the cap is $number * $maxViewport/anchor which is >= $number for
+ * any anchor below $maxViewport, and every lower anchor's rule already sits inside
+ * its own max-width query -- so their caps are unreachable and this is a no-op there.
+ *
+ * Negatives clamp with max() instead: min() would pick the MORE negative of the
+ * two and keep growing outward rather than freezing.
+ */
+@function vwSize($number, $breakpoints) {
+    $fluid: math.div($number, $breakpoints) * 100;
+    $cap: $number * math.div(var.$maxViewport, $breakpoints);
+
+    @if ($number < 0) {
+        @return #{"max(#{$fluid}vw, #{$cap}px)"};
+    }
+
+    @return #{"min(#{$fluid}vw, #{$cap}px)"};
+}
+
+// theme unit functions
+@function getIndex( $value, $i ) {
+    @return list.nth($value, $i);
+}
+
+@function unit( $value, $breakpoint ) {
+
+    $map: ();
+
+    @for $i from 1 through list.length($value) {
+
+        $item: null;
+        
+        @if ( type-of( getIndex($value, $i) ) != string ) {
+
+            @if( var.$themeUnit == 'vw' ) {
+                $item: vwSize( getIndex($value, $i), $breakpoint );
+            }
+            @else if ( var.$themeUnit == 'rem' ) {
+                $item: remSize( getIndex($value, $i) );
+            }
+            @else if ( var.$themeUnit == 'px' ) {
+                $item: #{getIndex($value, $i)}px;
+            }
+        } @else {
+
+            $item: #{getIndex($value, $i)};
+        }
+
+        $map: list.append($map, $item);
+    }
+
+    @return $map;
+}
+
+// return first registered responsive data
+@function desktopStart() {
+    @return #{list.nth(var.$desktopBreakpoints, 1)}px;
+};
+
+@function mobileStart() {
+    @return #{list.nth(var.$mobileBreakpoints, 1)}px;
+};

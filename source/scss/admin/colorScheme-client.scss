@@ -1,0 +1,619 @@
+@use 'sass:string';
+@use 'sass:meta';
+@use '_adminConfig.scss' as *;
+
+body {
+    background: $admin-body-bg;
+}
+
+/**
+* Wider Admin Menu for WordPress 5.0 and higher
+* From http://wordpress.org/plugins/wider-admin-menu/
+*/
+
+a, button, .button {
+    @include transition(all .3s ease);
+}
+
+#wpcontent,
+#wpfooter {
+    margin-left: 200px;
+}
+
+#adminmenuback,
+#adminmenuwrap,
+#adminmenu,
+#adminmenu .wp-submenu {
+    width: 200px;
+}
+
+#adminmenu .wp-submenu {
+    left: 200px;
+}
+
+#adminmenu .wp-not-current-submenu .wp-submenu,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu {
+    min-width: 200px;
+}
+
+/* Query Monitor plugin */
+body.wp-admin #qm {
+    margin-left: 200px !important;
+}
+
+/* Gutenberg */
+.auto-fold .edit-post-header {
+    left: 200px;
+}
+
+.auto-fold .components-notice-list {
+    left: 200px;
+}
+
+/* Admin menu separator */
+.drg-separator {
+    height: 10px !important;
+    border-bottom: 1px solid colorMod( $submenu-head, -65% );
+    position: relative;
+    
+    &.drg-settings, &.custom-post-types, &.content, &.wordpress-settings, &.others {
+        &::before {
+            font-size: 7px;
+            text-transform: uppercase;
+            color: $submenu-head;
+            // color: $white;
+            display: inline-block;
+            line-height: 1;
+            padding: 2px;
+            border: 1px solid colorMod( $submenu-head, -65% );
+            // border: 1px solid #108b12;
+            background-color: $base-menu;
+            // background-color: #108b12;
+            border-radius: 4px;
+            transform: translate(8px, -2px);
+            letter-spacing: 0.4px;
+        }
+    }
+    
+    &.drg-settings {
+        &::before {
+            content: 'Drg Settings';
+        }
+    }
+    
+    &.custom-post-types {
+        &::before {
+            content: 'Custom Post Types';
+        }
+    }
+    
+    &.content {
+        &::before {
+            content: 'Content';
+        }
+    }
+    
+    &.wordpress-settings {
+        &::before {
+            content: 'Wordpress Settings';
+        }
+    }
+    
+    &.others {
+        &::before {
+            content: 'Others';
+        }
+    }
+    
+}
+
+/* Links */
+
+a {
+    color: $link-color;
+}
+
+a:hover, a:active, a:focus {
+    color: $link-color-hover;
+}
+
+#post-body .misc-pub-post-status:before,
+#post-body #visibility:before,
+.curtime #timestamp:before,
+#post-body .misc-pub-revisions:before,
+span.wp-media-buttons-icon:before {
+    color: currentColor;
+}
+
+/* Forms */
+input[type=checkbox]:checked::before {
+    content: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23#{$checkMark}%27%2F%3E%3C%2Fsvg%3E");
+}
+
+input[type=radio]:checked::before {
+    background: $input;
+}
+
+.wp-core-ui input[type="reset"]:hover,
+.wp-core-ui input[type="reset"]:active {
+    color: $link-color-hover;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="color"]:focus,
+input[type="date"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="email"]:focus,
+input[type="month"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="time"]:focus,
+input[type="url"]:focus,
+input[type="week"]:focus,
+input[type="checkbox"]:focus,
+input[type="radio"]:focus,
+select:focus,
+textarea:focus {
+    border-color: $highlight;
+    box-shadow: 0 0 0 1px $highlight;
+}
+
+/* Core UI */
+.wp-core-ui .button,
+.wp-core-ui .button-secondary {
+    color: $button;
+    border-color: $button;
+}
+
+.wp-core-ui .button.hover,
+.wp-core-ui .button:hover,
+.wp-core-ui .button-secondary:hover,
+.wp-core-ui .button.focus,
+.wp-core-ui .button:focus,
+.wp-core-ui .button-secondary:focus {
+    border-color: $button-secondary;
+    color: $button-secondary;
+}
+
+.wp-core-ui .button.focus,
+.wp-core-ui .button:focus,
+.wp-core-ui .button-secondary:focus {
+    border-color: $button;
+    color: $button-secondary;
+    box-shadow: 0 0 0 1px $button;
+}
+
+.wp-core-ui .button:active {
+    background: $button-secondary;
+    border-color: $button-secondary;
+}
+
+.wp-core-ui .button.active,
+.wp-core-ui .button.active:focus,
+.wp-core-ui .button.active:hover {
+    border-color: $button-secondary;
+    color: $button-secondary;
+    box-shadow: inset 0 2px 5px -3px $button-secondary;
+}
+
+.wp-core-ui .button-primary {
+    background: $button;
+    border-color: $button;
+    color: $menu-text;
+}
+
+.wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus {
+    background: $button-hover;
+    border-color: $button-hover;
+    color: $menu-text;
+}
+
+.wp-core-ui .button-primary:focus {
+    box-shadow: 0 0 0 1px $menu-text, 0 0 0 3px $button;
+}
+
+.wp-core-ui .button-primary:active {
+    background: $button-secondary;
+    border-color: $button-secondary;
+    color: $menu-text;
+}
+
+.wp-core-ui .button-primary.active, .wp-core-ui .button-primary.active:focus, .wp-core-ui .button-primary.active:hover {
+    background: $button;
+    color: $menu-text;
+    border-color: $button-hover;
+    box-shadow: inset 0 2px 5px -3px black;
+}
+
+.wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
+    color: colorMod( $button-disabled, -15% ) !important;
+    background: $button-disabled !important;
+    border-color: colorMod( $button-disabled, -15% ) !important;
+    text-shadow: none !important;
+}
+
+.wp-core-ui .button-group > .button.active {
+    border-color: $button;
+}
+
+.wp-core-ui .wp-ui-primary {
+    color: $menu-text;
+    background-color: $base-menu;
+}
+
+.wp-core-ui .wp-ui-text-primary {
+    color: $base-menu;
+}
+
+.wp-core-ui .wp-ui-highlight {
+    color: $menu-text;
+    background-color: $highlight;
+}
+
+.wp-core-ui .wp-ui-text-highlight {
+    color: $highlight;
+}
+
+.wp-core-ui .wp-ui-notification {
+    color: $menu-text;
+    background-color: $notification;
+}
+
+.wp-core-ui .wp-ui-text-notification {
+    color: notification;
+}
+
+.wp-core-ui .wp-ui-text-icon {
+    color: $menu-icon;
+}
+
+.wrap .page-title-action {
+    color: $highlight;
+    border-color: $highlight;
+}
+
+/* List tables */
+.wrap .add-new-h2:hover,
+.wrap .page-title-action:hover {
+    color: $menu-text;
+    background-color: $highlight;
+    border-color: $highlight;
+}
+
+.view-switch a.current:before {
+    color: $base-menu;
+}
+
+.view-switch a:hover:before {
+    color: notification;
+}
+
+/* Admin Menu */
+#adminmenuback,
+#adminmenuwrap,
+#adminmenu {
+    background: $base-menu;
+}
+
+#adminmenu a {
+    color: $menu-text;
+}
+
+#adminmenu div.wp-menu-image:before {
+    color: $menu-icon;
+}
+
+#adminmenu a:hover,
+#adminmenu li.menu-top:hover,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus {
+    color: $menu-text;
+    background-color: $highlight;
+}
+
+#adminmenu li.menu-top:hover div.wp-menu-image:before,
+#adminmenu li.opensub > a.menu-top div.wp-menu-image:before {
+    color: $menu-text;
+}
+
+/* Active tabs use a bottom border color that matches the page background color. */
+.about-wrap .nav-tab-active,
+.nav-tab-active,
+.nav-tab-active:hover {
+    background-color: $admin-body-bg;
+    border-bottom-color: $admin-body-bg;
+}
+
+/* Admin Menu: submenu */
+#adminmenu .wp-submenu,
+#adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu {
+    background: $base-submenu;
+}
+
+#adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after {
+    border-right-color: $base-submenu;
+}
+
+#adminmenu .wp-submenu .wp-submenu-head {
+    color: $submenu-head;
+}
+
+#adminmenu .wp-submenu a,
+#adminmenu .wp-has-current-submenu .wp-submenu a,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu a,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu a,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu a {
+    color: $submenu-head;
+}
+
+#adminmenu .wp-submenu a:focus, #adminmenu .wp-submenu a:hover,
+#adminmenu .wp-has-current-submenu .wp-submenu a:focus,
+#adminmenu .wp-has-current-submenu .wp-submenu a:hover,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu a:focus,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu a:hover,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu a:focus,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu a:hover,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu a:focus,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu a:hover {
+    color: $highlight;
+}
+
+/* Admin Menu: current */
+#adminmenu .wp-submenu li.current a,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a {
+    color: $menu-text;
+}
+
+#adminmenu .wp-submenu li.current a:hover, #adminmenu .wp-submenu li.current a:focus,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a:hover,
+#adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a:focus,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:hover,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:focus {
+    color: $highlight;
+}
+
+ul#adminmenu a.wp-has-current-submenu:after,
+ul#adminmenu > li.current > a.current:after {
+    border-right-color: $admin-body-bg;
+}
+
+#adminmenu li.current a.menu-top,
+#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
+#adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
+.folded #adminmenu li.current.menu-top {
+    color: $menu-text;
+    background: $highlight;
+}
+
+#adminmenu li.wp-has-current-submenu div.wp-menu-image:before,
+#adminmenu a.current:hover div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu a:focus div.wp-menu-image:before,
+#adminmenu li.wp-has-current-submenu.opensub div.wp-menu-image:before,
+#adminmenu li:hover div.wp-menu-image:before,
+#adminmenu li a:focus div.wp-menu-image:before,
+#adminmenu li.opensub div.wp-menu-image:before,
+.ie8 #adminmenu li.opensub div.wp-menu-image:before {
+    color: $menu-text;
+}
+
+/* Admin Menu: bubble */
+#adminmenu .awaiting-mod,
+#adminmenu .update-plugins {
+    color: $menu-text;
+    background: notification;
+}
+
+#adminmenu li.current a .awaiting-mod,
+#adminmenu li a.wp-has-current-submenu .update-plugins,
+#adminmenu li:hover a .awaiting-mod,
+#adminmenu li.menu-top:hover > a .update-plugins {
+    color: $menu-text;
+    background: $base-submenu;
+}
+
+/* Admin Menu: collapse button */
+#collapse-button {
+    color: $menu-icon;
+}
+
+#collapse-button:hover,
+#collapse-button:focus {
+    color: $highlight;
+}
+
+/* Admin Bar */
+#wpadminbar {
+    color: $menu-text;
+    background: $base-menu;
+}
+
+#wpadminbar .ab-item,
+#wpadminbar a.ab-item,
+#wpadminbar > #wp-toolbar span.ab-label,
+#wpadminbar > #wp-toolbar span.noticon {
+    color: $menu-text;
+}
+
+#wpadminbar .ab-icon,
+#wpadminbar .ab-icon:before,
+#wpadminbar .ab-item:before,
+#wpadminbar .ab-item:after {
+    color: $menu-icon;
+}
+
+#wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item:focus,
+#wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
+#wpadminbar.nojs .ab-top-menu > li.menupop:hover > .ab-item,
+#wpadminbar .ab-top-menu > li.menupop.hover > .ab-item {
+    color: $highlight;
+    background: $base-submenu;
+}
+
+#wpadminbar:not(.mobile) > #wp-toolbar li:hover span.ab-label,
+#wpadminbar:not(.mobile) > #wp-toolbar li.hover span.ab-label,
+#wpadminbar:not(.mobile) > #wp-toolbar a:focus span.ab-label {
+    color: $highlight;
+}
+
+#wpadminbar:not(.mobile) li:hover .ab-icon:before,
+#wpadminbar:not(.mobile) li:hover .ab-item:before,
+#wpadminbar:not(.mobile) li:hover .ab-item:after,
+#wpadminbar:not(.mobile) li:hover #adminbarsearch:before {
+    color: $menu-text;
+}
+
+/* Admin Bar: submenu */
+#wpadminbar .menupop .ab-sub-wrapper {
+    background: $base-submenu;
+}
+
+#wpadminbar .quicklinks .menupop ul.ab-sub-secondary,
+#wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu {
+    background: $quicklink;
+}
+
+#wpadminbar .ab-submenu .ab-item,
+#wpadminbar .quicklinks .menupop ul li a,
+#wpadminbar .quicklinks .menupop.hover ul li a,
+#wpadminbar.nojs .quicklinks .menupop:hover ul li a {
+    color: $submenu-head;
+}
+
+#wpadminbar .quicklinks li .blavatar,
+#wpadminbar .menupop .menupop > .ab-item:before {
+    color: $menu-icon;
+}
+
+#wpadminbar .quicklinks .menupop ul li a:hover,
+#wpadminbar .quicklinks .menupop ul li a:focus,
+#wpadminbar .quicklinks .menupop ul li a:hover strong,
+#wpadminbar .quicklinks .menupop ul li a:focus strong,
+#wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover > a,
+#wpadminbar .quicklinks .menupop.hover ul li a:hover,
+#wpadminbar .quicklinks .menupop.hover ul li a:focus,
+#wpadminbar.nojs .quicklinks .menupop:hover ul li a:hover,
+#wpadminbar.nojs .quicklinks .menupop:hover ul li a:focus,
+#wpadminbar li:hover .ab-icon:before,
+#wpadminbar li:hover .ab-item:before,
+#wpadminbar li a:focus .ab-icon:before,
+#wpadminbar li .ab-item:focus:before,
+#wpadminbar li .ab-item:focus .ab-icon:before,
+#wpadminbar li.hover .ab-icon:before,
+#wpadminbar li.hover .ab-item:before,
+#wpadminbar li:hover #adminbarsearch:before,
+#wpadminbar li #adminbarsearch.adminbar-focused:before {
+    color: $highlight;
+}
+
+#wpadminbar .quicklinks li a:hover .blavatar,
+#wpadminbar .quicklinks li a:focus .blavatar,
+#wpadminbar .quicklinks .ab-sub-wrapper .menupop.hover > a .blavatar,
+#wpadminbar .menupop .menupop > .ab-item:hover:before,
+#wpadminbar.mobile .quicklinks .ab-icon:before,
+#wpadminbar.mobile .quicklinks .ab-item:before {
+    color: $highlight;
+}
+
+#wpadminbar.mobile .quicklinks .hover .ab-icon:before,
+#wpadminbar.mobile .quicklinks .hover .ab-item:before {
+    color: $menu-icon;
+}
+
+/* Admin Bar: search */
+#wpadminbar #adminbarsearch:before {
+    color: $menu-icon;
+}
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-top-secondary > #wp-admin-bar-search #adminbarsearch input.adminbar-input:focus {
+    color: $menu-text;
+    background: $adminbar-input;
+}
+
+/* Admin Bar: recovery mode */
+#wpadminbar #wp-admin-bar-recovery-mode {
+    color: $menu-text;
+    background-color: notification;
+}
+
+#wpadminbar #wp-admin-bar-recovery-mode .ab-item,
+#wpadminbar #wp-admin-bar-recovery-mode a.ab-item {
+    color: $menu-text;
+}
+
+#wpadminbar .ab-top-menu > #wp-admin-bar-recovery-mode.hover > .ab-item,
+#wpadminbar.nojq .quicklinks .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus,
+#wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode:hover > .ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu > #wp-admin-bar-recovery-mode > .ab-item:focus {
+    color: $menu-text;
+    background-color: $notification-alt;
+}
+
+/* Admin Bar: my account */
+#wpadminbar .quicklinks li#wp-admin-bar-my-account.with-avatar > a img {
+    border-color: $adminbar-input;
+    background-color: $adminbar-input;
+}
+
+#wpadminbar #wp-admin-bar-user-info .display-name {
+    color: $menu-text;
+}
+
+#wpadminbar #wp-admin-bar-user-info a:hover .display-name {
+    color: $highlight;
+}
+
+#wpadminbar #wp-admin-bar-user-info .username {
+    color: $submenu-head;
+}
+
+/* Pointers */
+.wp-pointer .wp-pointer-content h3 {
+    background-color: $highlight;
+    border-color: $pointer;
+}
+
+.wp-pointer .wp-pointer-content h3:before {
+    color: $highlight;
+}
+
+.wp-pointer.wp-pointer-top .wp-pointer-arrow,
+.wp-pointer.wp-pointer-top .wp-pointer-arrow-inner,
+.wp-pointer.wp-pointer-undefined .wp-pointer-arrow,
+.wp-pointer.wp-pointer-undefined .wp-pointer-arrow-inner {
+    border-bottom-color: $highlight;
+}
+
+/* Media */
+.media-item .bar,
+.media-progress-bar div {
+    background-color: $highlight;
+}
+
+.details.attachment {
+    box-shadow: inset 0 0 0 3px $menu-text, inset 0 0 0 7px $highlight;
+}
+
+.attachment.details .check {
+    background-color: $highlight;
+    box-shadow: 0 0 0 1px $menu-text, 0 0 0 2px $highlight;
+}
+
+.media-selection .attachment.selection.details .thumbnail {
+    box-shadow: 0 0 0 1px $menu-text, 0 0 0 3px $highlight;
+}
+
+/* Themes */
+.theme-browser .theme.active .theme-name,
+.theme-browser .theme.add-new-theme a:hover:after,
+.theme-browser .theme.add-new-theme a:focus:after {
+    background: $highlight;
+}

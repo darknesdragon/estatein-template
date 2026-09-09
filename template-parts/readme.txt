@@ -1,0 +1,1 @@
+Place template-parts to be use by themes

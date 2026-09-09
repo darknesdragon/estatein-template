@@ -1,0 +1,68 @@
+@use 'sass:map';
+@use 'sass:math';
+@use '_config.scss' as *;
+
+// main Bootstrap Module
+// @use 'config/_init-bootstrap.scss';
+
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | Drago New Standard                      | //
+// |_________________________________________| //
+
+/* root font-size variable -- start */
+:root {
+    @include fontVar();
+}
+/* root font-size variable -- end */
+
+/* create font-size class -- start */
+@include printFontClass();
+/* create font-size class -- end */
+
+/* ratio-item class -- start */
+.ratio-item {
+    @extend %ratioItem;
+}
+/* ratio-item class -- end */
+
+/* fade-in start state -- start */
+/**
+ * Armed only by the inline gate in header.php, so no-JS renders unhidden.
+ *
+ * opacity + visibility together mirror GSAP's autoAlpha, so the CSS start state
+ * and the runtime one govern exactly the same two properties -- no element ends
+ * up half-owned by each. Neither affects layout, so this costs nothing in CLS.
+ *
+ * A group hides its direct children -- unless it carries marked items, in which
+ * case those hide and the children do not. The :has() guard keeps this in step
+ * with the same branch in drgFadeInit(): whatever JS reveals is what CSS hides,
+ * so nothing can be hidden by one and never touched by the other.
+ *
+ * Getting that wrong is silent and total. A swiper group hiding its slides while
+ * JS reveals the cards inside them leaves the whole track invisible for good.
+ */
+.drg-js {
+    [data-drg-fade],
+    [data-drg-fade-item],
+    [data-drg-fade-group]:not(:has([data-drg-fade-item])) > * {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+/* fade-in start state -- end */
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | CUSTOM CODE START HERE                  | //
+// |_________________________________________| //
+
+// this code is only example, you can delete the code here
+.section {
+    &__title {
+        @include typo(display-1);
+    }
+
+    &__desc {
+        @include typo(nav-link, true, 3);
+    }
+}

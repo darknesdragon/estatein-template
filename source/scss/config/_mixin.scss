@@ -1,0 +1,395 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:string';
+@use '_variable.scss' as var;
+@use '_function.scss' as func;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | drgMIX v.3.1.1                          | //
+// | last update : 04 / 06 / 2024            | //
+// |_________________________________________| //
+
+// transform with fallback
+@mixin transform($declaration) {
+    -webkit-transform: #{$declaration};
+    -moz-transform: #{$declaration};
+    -ms-transform: #{$declaration};
+    -o-transform: #{$declaration};
+    transform: #{$declaration};
+}
+
+// transition with fallback
+@mixin transition($option) {
+    -webkit-transition: #{$option};
+    -moz-transition: #{$option};
+    -ms-transition: #{$option};
+    -o-transition: #{$option};
+    transition: #{$option};
+}
+
+// display flex with fallback
+@mixin displayFlex {
+    display: block;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+// make ratio classes
+@mixin imageRatio($desktopDimension, $mobileDimension: false, $maxWidth: false, $objectFit: contain, $className : 'image') {
+    &__#{$className}-container {
+
+        $dektopWidth : list.nth($desktopDimension, 1);
+        $desktopHeight: null;
+        @if ( list.length($desktopDimension) > 1 ) {
+            $desktopHeight : list.nth($desktopDimension, 2);
+        } @else {
+            $desktopHeight : list.nth($desktopDimension, 1);
+        }
+
+        position: relative;
+        width: 100%;
+
+        @if ( $maxWidth ) {
+            display: inline-block;
+            @if ( $maxWidth == true ) {
+                @include vwUnit(max-width, $dektopWidth);
+            } @else {
+                @include vwUnit(max-width, $maxWidth);
+            }
+        } @else {
+            display: block;
+        }
+
+        &:before {
+            content: "";
+            display: block;
+            padding-top: math.div($desktopHeight, $dektopWidth) * 100%;
+        }
+
+        .ratio-item {
+            object-fit: $objectFit;
+        }
+
+        @if ( $mobileDimension ) {
+            $mobileWidth : list.nth($mobileDimension, 1);
+            $mobileHeight : null;
+            @if ( list.length($mobileDimension) > 1 ) {
+                $mobileHeight : list.nth($mobileDimension, 2);
+            } @else {
+                $mobileHeight : list.nth($mobileDimension, 1);
+            }
+
+            @media screen and (max-width: func.mobileStart()) {
+
+                // @if ( $maxWidth ) {
+                    // @if ( $maxWidth == true ) {
+                    //     @include vwUnit(max-width, $mobileWidth);
+                    // }
+                // }
+
+                &:before {
+                    padding-top: math.div($mobileHeight, $mobileWidth) * 100%;
+                }
+
+            }
+        }
+    }
+}
+
+// Image Ratio - Art DIrection
+
+
+// element state mixin
+@mixin fullState {
+    &:hover, &:active, &:focus, &:active:hover, &:active:focus {
+        @content;
+    }
+}
+
+// responsive Font Size
+
+// -- responsice font size component -- start
+@mixin printOtherProp( $fontName, $breakpoint ) {
+    @each $property, $value in map.get( var.$fontSizes, $fontName, $breakpoint ) {
+        @if ( $property != font-size ) {
+            #{$property}: $value;
+        }
+    }
+}
+
+@mixin elypsisDefaultProp {
+    display: block; // Fallback for non-webkit
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@mixin elypsisProperty($fontName, $fontSize, $line-to-show, $line-height, $breakpoint) {
+    $breakpointValue : null;
+    @if ( $breakpoint == desktop ) {
+        $breakpointValue : list.nth( var.$desktopBreakpoints, 1 );
+    }
+    height: func.unit( $fontSize * $line-height * $line-to-show, $breakpointValue );
+    line-height: $line-height;
+    -webkit-line-clamp: $line-to-show;
+
+    @each $property, $value in map.get(var.$fontSizes, $fontName, $breakpointValue) {
+        @if ( $property != 'font-size' and $property != 'line-height' ) {
+            @if ( $property != font-size ) {
+                #{$property}: $value;
+            }
+        }
+    }
+}
+
+@mixin elypsisResProp($elypsis, $fontName, $line-height, $line-to-show, $breakpoint) {
+                
+    $elypFS: null;
+    $elypLH: null;
+
+    @if ( $elypsis == true ) {
+        // get font-size
+        @if (map.get( var.$fontSizes, $fontName, $breakpoint, font-size )) {
+            $elypFS: map.get( var.$fontSizes, $fontName, $breakpoint, font-size );
+        }
+        @else {
+    
+            @if ( $breakpoint > list.nth( var.$mobileBreakpoints, 1 ) ) {
+                $elypFS: map.get( var.$fontSizes, $fontName, desktop, font-size );
+            } 
+            @else {
+                $elypFS: map.get( var.$fontSizes, $fontName, mobile, font-size );
+            }
+        }
+        
+        // get line-heigt
+        @if (map.get( var.$fontSizes, $fontName, $breakpoint, line-height )) {
+            $elypLH: map.get( var.$fontSizes, $fontName, $breakpoint, line-height );
+        }
+        @else if (map.get( var.$fontSizes, $fontName, $breakpoint, line-height ) == null) {
+    
+            @if ( $breakpoint <= list.nth( var.$mobileBreakpoints, 1 ) and map.get( var.$fontSizes, $fontName, mobile, line-height ) ) {
+                $elypLH: map.get( var.$fontSizes, $fontName, mobile, line-height );
+            } 
+            @else if (map.get( var.$fontSizes, $fontName, desktop, line-height )) {
+                $elypLH: map.get( var.$fontSizes, $fontName, desktop, line-height );
+            }
+            @else {
+                $elypLH: $line-height;
+            }
+        }
+    
+        // @debug $elypFS;
+        // @debug $elypLH;
+        // @debug $line-to-show;
+        // @debug $elypFS * $elypLH * $line-to-show;
+    
+        height: func.unit( $elypFS * $elypLH * $line-to-show, $breakpoint );
+    }
+}
+// -- responsice font size component -- end
+
+@mixin typo($fontName, $elypsis: false, $line-to-show: 1, $line-height: 1.6) {
+
+    @each $breakpoint in var.$desktopBreakpoints {
+        @if ( $breakpoint == list.nth( var.$desktopBreakpoints, 1 ) ) {
+            $breakpointMap : desktop;
+
+            @if ( $elypsis == true ) {
+                font-size: var(--tdfs-#{$fontName});
+                
+                @include elypsisDefaultProp;
+
+                $elypFS: map.get( var.$fontSizes, $fontName, desktop, font-size );
+                $elypLH: null;
+
+                @if (map.get( var.$fontSizes, $fontName, desktop, line-height )) {
+                    $elypLH: map.get( var.$fontSizes, $fontName, desktop, line-height );
+                }
+                @else {
+                    $elypLH: $line-height;
+                }
+
+                @include elypsisProperty($fontName, $elypFS, $line-to-show, $elypLH, $breakpointMap)
+            }
+
+            @else {
+                @extend %fs-#{$fontName};
+            }
+        }
+        @else {
+            @media (max-width: #{$breakpoint}px) {
+                @include elypsisResProp($elypsis, $fontName, $line-height, $line-to-show, $breakpoint );
+            }
+        }
+    }
+    
+    @each $breakpoint in var.$mobileBreakpoints {
+        @media (max-width: #{$breakpoint}px) {
+            @include elypsisResProp($elypsis, $fontName, $line-height, $line-to-show, $breakpoint );
+        }
+    }
+}
+
+// print font-size as root variable
+@mixin fontVar() {
+    @each $breakpoint in var.$desktopBreakpoints {
+        @if ( $breakpoint == list.nth( var.$desktopBreakpoints, 1 ) ) {
+            @each $fontName, $value in var.$fontSizes {
+                --tdfs-#{$fontName}: #{ func.unit( map.get($value, desktop, font-size), list.nth( var.$desktopBreakpoints, 1 )) };
+            }
+        }
+        @else {
+            @media (max-width: #{$breakpoint}px) {
+                $breakValue: null;
+                @each $fontName, $value in var.$fontSizes {
+                    @if ( map.get( var.$fontSizes, $fontName, $breakpoint, font-size ) ) {
+                        $breakValue: $breakpoint;
+                    }
+                    @else {
+                        $breakValue: desktop;
+                    }
+                    --tdfs-#{$fontName}: #{ func.unit( map.get($value, $breakValue, font-size), $breakpoint) };
+                }
+            }
+        }
+    }
+    @each $breakpoint in var.$mobileBreakpoints {
+        @media (max-width: #{$breakpoint}px) {
+            $breakValue: null;
+            @each $fontName, $value in var.$fontSizes {
+                @if ( map.get( var.$fontSizes, $fontName, $breakpoint, font-size ) ) {
+                    $breakValue: $breakpoint;
+                }
+                @else if ( map.get( var.$fontSizes, $fontName, mobile, font-size ) ) {
+                    $breakValue: mobile;
+                }
+                @else {
+                    $breakValue: desktop;
+                }
+                --tdfs-#{$fontName}: #{ func.unit( map.get($value, $breakValue, font-size), $breakpoint) };
+            }
+        }
+    }
+}
+
+// create all registered font as extend
+@mixin createFontExtend() {
+    @each $fontName in map.keys(var.$fontSizes) {
+        %fs-#{$fontName} {
+            font-size: var(--tdfs-#{$fontName});
+
+            @each $breakpoint in var.$desktopBreakpoints {
+                @if ( $breakpoint == list.nth( var.$desktopBreakpoints, 1 ) ) {
+                    @include printOtherProp($fontName, desktop);
+                }
+                @else {
+                    @media (max-width: #{$breakpoint}px) {
+
+                        @if ( map.get( var.$fontSizes, $fontName, $breakpoint ) ) {
+                            @include printOtherProp($fontName, $breakpoint);
+                        }
+                    }
+                }
+            }
+    
+            @each $breakpoint in var.$mobileBreakpoints {
+                @media (max-width: #{$breakpoint}px) {
+                    @if ( $breakpoint == list.nth( var.$mobileBreakpoints, 1 ) ) {
+        
+                        @each $property, $value in map.get( var.$fontSizes, $fontName, mobile ) {
+                            @if ( $property != font-size ) {
+                                @if ( map.get( var.$fontSizes, $fontName, $breakpoint, $property ) ) {
+                                    $value: map.get( var.$fontSizes, $fontName, $breakpoint, $property );
+                                }
+                                #{$property}: $value;
+                            }
+                        }
+                    }
+                    @else {
+                        @include printOtherProp($fontName, $breakpoint);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+// print all font-szie as own class
+@mixin printFontClass() {
+    @each $fontName in map.keys(var.$fontSizes) {
+        .fs-#{$fontName} {
+            @extend %fs-#{$fontName};
+        }
+    }
+}
+// responsive VW unit
+@mixin vwDesktop($property, $value) {
+    
+    @each $breakpoint in var.$desktopBreakpoints {
+        @if ( $breakpoint == list.nth( var.$desktopBreakpoints, 1 ) ) {
+            #{$property}: func.unit($value, $breakpoint);
+        }
+        @else {
+            @media screen and (max-width: #{$breakpoint}px) {
+                #{$property}: func.unit($value, $breakpoint);
+            }
+        }
+    }
+
+}
+@mixin vwMobile($property, $value) {
+
+    @each $breakpoint in var.$mobileBreakpoints {
+        @media screen and (max-width: #{$breakpoint}px) {
+            #{$property}: func.unit($value, $breakpoint);
+        }
+    }
+
+}
+@mixin vwUnit($property, $valueD, $valueM: null) {
+
+    @if ( $valueM == null ) {
+        $valueM: $valueD;
+    }
+
+    @include vwDesktop($property, $valueD);
+    @include vwMobile($property, $valueM);
+
+}
+
+/**
+ * A mobile value across the WHOLE stacked range, not just the phone anchors.
+ *
+ * vwMobile emits only the 767 and 480 anchors. A module that stacks at Bootstrap's
+ * xl (1200) therefore gets its stacked STRUCTURE from 1199 down but none of its
+ * VALUES until 767 -- so 768-1199 renders with the property missing entirely.
+ *
+ * This adds the missing 1199 anchor first, then lets vwMobile's narrower queries
+ * override it further down. One argument serves all three anchors.
+ *
+ * Use it for any property that only exists once a layout has stacked. A value
+ * that applies at every width wants vwUnit() instead -- that already emits an
+ * unconditional base declaration, which is why it never had this gap.
+ *
+ * Known seam: the 1199 anchor renders a mobile design value against a desktop
+ * width, so the property grows toward 1199 and steps at the 767 boundary where
+ * the phone anchor takes over. Accepted -- it is the tablet-anchor tradeoff, and
+ * changing it belongs here rather than per component.
+ *
+ * Carries its own max-width query, so it does NOT go inside one.
+ */
+@mixin vwStacked($property, $value, $stackAt: 1199.98px) {
+
+    @media screen and (max-width: $stackAt) {
+        #{$property}: func.unit($value, 1199);
+    }
+
+    @include vwMobile($property, $value);
+
+}

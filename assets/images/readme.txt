@@ -1,0 +1,1 @@
+Put static image use by theme on this folder

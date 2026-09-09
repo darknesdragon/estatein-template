@@ -1,0 +1,16 @@
+// FOR BOOTSTRAP 5
+// Custom grid layout
+$custom-grid-breakpoints: (
+    xxxl: 1680px
+);
+
+// Merge the maps
+$grid-breakpoints: map-merge($grid-breakpoints, $custom-grid-breakpoints);
+
+// Custom container width
+$custom-container-max-width: (
+    xxxl: 1600px
+);
+
+// Merge the maps
+$container-max-widths: map-merge($container-max-widths, $custom-container-max-width);

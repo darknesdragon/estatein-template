@@ -1,0 +1,1 @@
+Place to for compiled Javascript from Laravel-Mix

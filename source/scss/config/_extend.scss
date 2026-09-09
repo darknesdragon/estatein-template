@@ -1,0 +1,16 @@
+@use '_mixin.scss' as mix;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | drgExtend v.1.1.0                       | //
+// | last update : 04 / 07 / 2024            | //
+// |_________________________________________| //
+
+%ratioItem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@include mix.createFontExtend();

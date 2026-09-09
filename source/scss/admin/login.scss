@@ -1,0 +1,181 @@
+@use '_adminConfig.scss' as *;
+
+%loginLogoSetting {
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+}
+
+:root {
+    --web-identity: #{color(pumpkin)};
+}
+
+body {
+    height: auto;
+    
+    &.login {
+        position: relative;
+        background-color: #ddd;
+        
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 400px;
+            bottom: 0;
+            z-index: -1;
+            content: "";
+            background-repeat: no-repeat;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            
+            @media (max-width: 767px) {
+                right: 350px;
+            }
+            
+            @media (max-width:575px) {
+                display: none;
+            }
+        }
+        
+    }
+}
+
+.grecaptcha-badge { visibility: hidden; }
+
+#login {
+    h1 {
+        a {
+            @extend %loginLogoSetting;
+        }
+    }
+    width: 100% !important;
+    max-width: 400px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 15px 50px;
+    margin: 0 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+    
+    @media (max-width: 767px) {
+        max-width: 350px;
+        padding: 15px 30px;
+    }
+    
+    @media (max-width: 575px) {
+        margin-left: auto;
+        margin-right: auto;
+        background-color: transparent;
+    }
+}
+
+#resetpassform,
+#lostpasswordform,
+#registerform,
+#loginform {
+    border: none;
+    padding: 3px;
+    margin: 0;
+    background-color: transparent;
+}
+
+.login {
+    h1 {
+        a {
+            @extend %loginLogoSetting;
+        }
+    }
+    #backtoblog,
+    #nav {
+        padding: 3px;
+    }
+    
+    // .button-primary {
+    //     padding: 6px 15px!important;
+    //     background-color: #000;
+    //     border-radius: 0;
+    //     border-color: #000;
+    
+    //     &:hover,
+    //     &:focus {
+    //         background-color: #555;
+    //         border-color: #555;
+    //         box-shadow: none;
+    //     }
+    // }
+    
+    input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week] {
+        border-radius: 0;
+        border-color: #aaa;
+        &:focus {
+            border-color: #888;
+            box-shadow: 0 0 0 1px #888;
+        }
+    }
+    
+    .wp-hide-pw {
+        color: #666;
+        
+        &:hover,
+        &:focus {
+            color: #333;
+        }
+    }
+    
+    .message {
+        background-color: #efefef;
+        border: none;
+        box-shadow: none;
+        text-align: center;
+        
+        &.register {
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 10px;
+            background-color: transparent;
+        }
+    }
+    
+    .captcha-text {
+        text-align: left;
+        font-size: 12px;
+    }
+}
+
+$drgGreen : #10af13;
+$drgGreenHover : colorMod(#10af13, -25%);
+
+.wp-core-ui .button {
+    color: $drgGreen;
+    border-color: $drgGreen;
+    @include transition(all .3s ease);
+    &:hover {
+        color: $drgGreenHover;
+        border-color: $drgGreenHover;
+    }
+}
+
+.wp-core-ui .button-primary {
+    color: #fff;
+    background-color: $drgGreen;
+    border-color: $drgGreen;
+    &:hover {
+        color: #fff;
+        background-color: $drgGreenHover;
+        border-color: $drgGreenHover;
+    }
+}
+
+a {
+    color: $drgGreen;
+    @include transition(all .3s ease);
+    
+    &:hover {
+        color: $drgGreenHover;
+    }
+}

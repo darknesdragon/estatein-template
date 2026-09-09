@@ -1,0 +1,75 @@
+@use 'sass:string';
+@use 'sass:meta';
+
+@use '../_config.scss' as *;
+@forward '../_config.scss';
+
+// --------------------------------- //
+// Admin Specific Functions -- start
+// --------------------------------- //
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Kitty Giraudel
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+
+@function str-replace($string, $search, $replace: '') {
+    $index: string.index($string, $search);
+    
+    @if $index {
+        @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+    }
+    
+    @return $string;
+}
+
+// --------------------------------- //
+// Admin Specific Functions -- end
+// --------------------------------- //
+
+// --------------------------- //
+// admin color scheme -- start 
+// --------------------------- //
+
+// change this variable
+
+$primary          : color( pumpkin );
+$secondary        : color( prussian-blue );
+$error            : color( error );
+
+// -------------------------------------
+
+$admin-body-bg    : #f1f1f1;
+
+$link-color       : colorMod( $primary, -30% );
+$link-color-hover : $primary;
+
+$input            : $primary;
+
+$highlight        : $primary;
+$pointer          : colorMod( $highlight, +25% );
+
+$checkMark        : str-replace( meta.inspect($highlight), '#', '' );
+
+$button           : $primary;
+$button-hover     : colorMod( $button, +25% );
+$button-secondary : $secondary;
+$button-disabled  : colorMod( $button, +75% );
+
+$menu-text        : #ffffff;
+$menu-icon        : #f1f2f3;
+$submenu-head     : #bdbfc0;
+
+$base-menu        : #23282d;
+$base-submenu     : #131619;
+$quicklink        : #373a3d;
+$adminbar-input   : #333a41;
+
+$notification     : $error;
+$notification-alt : colorMod( $notification, +25% );
+
+// --------------------------- //
+// admin color scheme -- end
+// --------------------------- //
