@@ -30,13 +30,13 @@ function drg_admin_color_scheme(){
 	//Dragon
 	wp_admin_css_color( 'dragon', __( 'Dragon' ),
 		$theme_dir . '/assets/css/admin/colorScheme-drg.css',
-		array( '#242e3b', '#fff', '#d54e21' , '#10af13')
+		array( '#242e3b', '#fff', '#d54e21' , '#703bf7')
 	);
 
 	// Website COlor Scheme
 	wp_admin_css_color( 'website_color_scheme', __( 'Website Color Scheme' ),
 		$theme_dir . '/assets/css/admin/colorScheme-client.css',
-		// array( '#242e3b', '#fff', '#d54e21' , '#10af13')
+		// array( '#242e3b', '#fff', '#d54e21' , '#703bf7')
 	);
 }
 add_action('admin_init', 'drg_admin_color_scheme');

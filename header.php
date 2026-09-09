@@ -36,7 +36,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#10AF13">
+    <meta name="theme-color" content="#703BF7">
     
     <?php wp_head(); ?>
 </head>
@@ -46,6 +46,8 @@
     <?php wp_body_open(); ?>
     
     <header>
+        <?php get_template_part( 'template-parts/header-banner/index' ); ?>
+
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <?php
@@ -81,5 +83,3 @@
     </header>
     
     <main>
-
-    <?php drg_show_debug_helper(); ?>

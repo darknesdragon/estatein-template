@@ -1,0 +1,10 @@
+@use 'config' as *;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | Module: main_banner
+// |_________________________________________| //
+
+.drg-main-banner {
+    @include vwUnit(padding-top, 120, 64);
+    @include vwUnit(padding-bottom, 120, 64);
+}

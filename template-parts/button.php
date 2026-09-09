@@ -67,7 +67,20 @@ $is_link_variant = isset( $args['variant'] ) && 'link' === $args['variant'];
  * no fill to colour, which is why this only affects the pill branch.
  */
 $button_style = ( isset( $args['style'] ) && 'secondary' === $args['style'] ) ? 'btn-secondary' : 'btn-primary';
-$button_base  = $is_link_variant ? 'drg-button drg-button--link' : 'btn ' . $button_style . ' drg-button';
+
+/**
+ * A style that applies to BOTH shapes.
+ *
+ * btn-primary / btn-secondary only mean anything on a filled pill, so until now
+ * the link variant ignored `style` entirely. 'light' is a palette for a dark
+ * ground -- something either shape can sit on -- so it is emitted as its own
+ * modifier class instead of being folded into the pill branch.
+ */
+$button_modifier = ( isset( $args['style'] ) && 'light' === $args['style'] ) ? ' drg-button--light' : '';
+
+$button_base = $is_link_variant
+    ? 'drg-button drg-button--link' . $button_modifier
+    : 'btn ' . $button_style . ' drg-button' . $button_modifier;
 
 /**
  * Optional icon, placed before or after the label.

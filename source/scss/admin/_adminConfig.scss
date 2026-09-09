@@ -35,9 +35,11 @@
 
 // change this variable
 
-$primary          : color( pumpkin );
-$secondary        : color( prussian-blue );
-$error            : color( error );
+$primary          : color( purple );
+$secondary        : color( grey, 20 );
+// admin chrome only -- a notification red is not a brand token, so it does not
+// belong in $color
+$error            : #FF1818;
 
 // -------------------------------------
 

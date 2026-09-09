@@ -3,7 +3,11 @@
 @use '_config.scss' as *;
 
 // main Bootstrap Module
-// @use 'config/_init-bootstrap.scss';
+@use 'config/_init-bootstrap.scss';
+
+// shared components -- markup lives in template-parts/, so the CSS is global
+@use 'components/button';
+@use 'components/header-banner';
 
 
 // |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
@@ -25,6 +29,10 @@
     @extend %ratioItem;
 }
 /* ratio-item class -- end */
+
+a, .btn {
+    @include transition(all .3s ease);
+}
 
 /* fade-in start state -- start */
 /**
@@ -56,13 +64,26 @@
 // | CUSTOM CODE START HERE                  | //
 // |_________________________________________| //
 
-// this code is only example, you can delete the code here
-.section {
-    &__title {
-        @include typo(display-1);
-    }
-
-    &__desc {
-        @include typo(nav-link, true, 3);
-    }
+/**
+ * Full-bleed container that freezes with the design.
+ *
+ * Bootstrap's .container-fluid is width: 100% forever, but every vwUnit() value
+ * caps at $maxViewport because vwSize() emits min(Xvw, Ypx). Past 1920 the box
+ * would keep widening while its padding stood still, pulling the layout apart.
+ * Capping the box on the same line the padding caps keeps a 2560 screen
+ * pixel-identical to a 1920 one.
+ *
+ * max-width is tied to $maxViewport rather than a literal 1920px so the box and
+ * every vwUnit() cap move together if that constant ever changes.
+ *
+ * Named drg- rather than overriding Bootstrap's .container-fluid, which IS
+ * compiled (_init-bootstrap.scss imports `containers`) -- redefining it would
+ * silently change behaviour anywhere Bootstrap or future markup relies on it.
+ */
+.drg-container-fluid {
+    position: relative; // containing block for absolutely positioned children
+    width: 100%;
+    max-width: #{$maxViewport}px;
+    margin-inline: auto;
+    padding-inline: $containerPadding;
 }

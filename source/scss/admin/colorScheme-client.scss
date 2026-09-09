@@ -229,10 +229,17 @@ textarea:focus {
     box-shadow: inset 0 2px 5px -3px black;
 }
 
+/**
+ * Disabled primary button -- see the matching rule in colorScheme-drg.scss.
+ *
+ * Same defect as that scheme had: $button-disabled is colorMod($button, +75%),
+ * so this painted a light brand tint on a light brand tint. Now follows core --
+ * brand background, label faded to 40% white.
+ */
 .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
-    color: colorMod( $button-disabled, -15% ) !important;
-    background: $button-disabled !important;
-    border-color: colorMod( $button-disabled, -15% ) !important;
+    color: rgba( #ffffff, .4 ) !important;
+    background: $button !important;
+    border-color: $button !important;
     text-shadow: none !important;
 }
 
@@ -616,4 +623,19 @@ ul#adminmenu > li.current > a.current:after {
 .theme-browser .theme.add-new-theme a:hover:after,
 .theme-browser .theme.add-new-theme a:focus:after {
     background: $highlight;
+}
+/**
+ * Toolbar Publish Button plugin -- see the matching rule in colorScheme-drg.scss
+ * for why this carries a `body` prefix instead of !important.
+ */
+body #wpadminbar:not(.mobile) #wp-toolbar li.wpuxss-tpb > .ab-item {
+    background-color: $button;
+}
+
+/**
+ * Admin bar site icon -- see the matching rule in colorScheme-drg.scss for why
+ * this carries a `body` prefix.
+ */
+body #wpadminbar #wp-admin-bar-site-name > .ab-item .site-icon {
+    background: transparent;
 }

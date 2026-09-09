@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_6aa185b1a364e",
+    "title": "Customize Settings",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Customize Settings",
+    "menu_slug": "customize-settings",
+    "parent_slug": "theme-settings",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": false,
+    "description": "",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "edit_posts",
+    "data_storage": "post_id",
+    "post_id": "customize_settings",
+    "autoload": 0,
+    "modified": 1788970449
+}

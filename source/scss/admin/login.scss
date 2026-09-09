@@ -7,7 +7,7 @@
 }
 
 :root {
-    --web-identity: #{color(pumpkin)};
+    --web-identity: #{color(purple)};
 }
 
 body {
@@ -147,35 +147,35 @@ body {
     }
 }
 
-$drgGreen : #10af13;
-$drgGreenHover : colorMod(#10af13, -25%);
+$brand      : color( purple );
+$brandHover : colorMod( color( purple ), -25% );
 
 .wp-core-ui .button {
-    color: $drgGreen;
-    border-color: $drgGreen;
+    color: $brand;
+    border-color: $brand;
     @include transition(all .3s ease);
     &:hover {
-        color: $drgGreenHover;
-        border-color: $drgGreenHover;
+        color: $brandHover;
+        border-color: $brandHover;
     }
 }
 
 .wp-core-ui .button-primary {
     color: #fff;
-    background-color: $drgGreen;
-    border-color: $drgGreen;
+    background-color: $brand;
+    border-color: $brand;
     &:hover {
         color: #fff;
-        background-color: $drgGreenHover;
-        border-color: $drgGreenHover;
+        background-color: $brandHover;
+        border-color: $brandHover;
     }
 }
 
 a {
-    color: $drgGreen;
+    color: $brand;
     @include transition(all .3s ease);
     
     &:hover {
-        color: $drgGreenHover;
+        color: $brandHover;
     }
 }

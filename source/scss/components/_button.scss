@@ -1,0 +1,50 @@
+@use '../_config.scss' as *;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | Component: button                       | //
+// |_________________________________________| //
+
+/**
+ * Styles for template-parts/button.php.
+ *
+ * Its own partial rather than a module's, because the part is shared -- any
+ * section can render it, so its CSS belongs in layout.css alongside the markup
+ * that every page can emit.
+ */
+.drg-button {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+
+    /**
+     * The bare-label shape. Takes neither Bootstrap's .btn nor our .btn
+     * overrides, so there is no pill padding, fill or border to unset.
+     */
+    &--link {
+        padding: 0;
+        background: none;
+        border: 0;
+        color: inherit;
+    }
+
+    /**
+     * Palette for a dark ground, not a shape -- so it composes with either
+     * variant rather than replacing one.
+     */
+    &--light {
+        color: color( white );
+        text-decoration: underline;
+
+        /**
+         * Shade 75, not the brand 60.
+         *
+         * Hover on a dark ground drops contrast sharply -- white sits at 17.4:1
+         * against grey/10, and purple 60 would land at 3.03:1, under the 4.5:1
+         * AA needs for 18px at weight 500 (not large text: that wants 24px, or
+         * 19px bold). Shade 75 reads unmistakably purple at 6.10:1.
+         */
+        @include fullState {
+            color: color( purple, 75 );
+        }
+    }
+}

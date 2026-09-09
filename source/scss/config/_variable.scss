@@ -21,7 +21,23 @@ $themeUnit: 'vw';
 $maxViewport: 1920;
 
 // keep in sync with the google font enqueued in inc/functions-style-script.php
-$fontPrimary: 'Manrope', sans-serif;
+$fontPrimary: 'Urbanist', sans-serif;
+
+/**
+ * Horizontal gutter, shared by .drg-container-fluid and Bootstrap's grid.
+ *
+ * A literal px and CONSTANT at every viewport -- a deliberate exception to the
+ * "every dimension goes through vwUnit()" rule. This has to stay equal to half
+ * Bootstrap's $grid-gutter-width, and Bootstrap emits that at a fixed size, so a
+ * value that scaled with the viewport would drift out of alignment with .row and
+ * .col everywhere except the anchor width.
+ *
+ * _init-bootstrap.scss reads it as $grid-gutter-width: $containerPadding * 2, so
+ * .col padding, .container padding and .drg-container-fluid padding all resolve
+ * from this one number. Bootstrap 5 ships 1.5rem (24px) by default, which is why
+ * that override exists at all.
+ */
+$containerPadding: 15px;
 
 $desktopBreakpoints: (
     1920,
@@ -33,45 +49,54 @@ $mobileBreakpoints: (
     480
 );
 
-// color example taken from Drago - Petrane Figma
-// https://www.figma.com/design/TAvIMAc18SOhop5Cs9he7t/Petrane?node-id=6-3&node-type=canvas&t=zFVBjA4RSoEmze7h-0
-
+/**
+ * Estatein palette.
+ *
+ * Shade keys are the HSL LIGHTNESS of the colour, which is why the ramps read
+ * 08..60 for grey and 60..99 for purple rather than 100..900 -- grey 50 is
+ * literally hsl(0, 0%, 50%). Reading a key tells you how light the result is.
+ *
+ * Keys are bare numbers, not strings. Sass normalises 08 to 8 on both the write
+ * and the read, so color(grey, 08) and color(grey, 8) both resolve. Quoting them
+ * would make color(purple, 60) -- the natural thing to type -- return null, and
+ * colorMod() fatals on null rather than warning.
+ *
+ * white and grey are separate ramps, not one: white carries a faint blue tint
+ * (hue 240, sat ~6%) while grey is pure neutral (sat 0).
+ */
 $color: (
-    pumpkin: (
-        default: #F6871F,
-    ),
-    prussian-blue: (
-        default: #003559
-    ),
-    french-grey: (
-        default: #C5C4C9
-    ),
-    dutch-white: (
-        default: #FCE6C4
-    ),
-    anti-flash-white: (
-        default: #E9ECF1
-    ),
-    baby-powder: (
-        default: #F8F4FD
-    ),
-    body: (
-        default: #6A6A6A,
-        50: rgba(106, 106, 106, 0.5),
-    ),
-    pure-white: (
+    white: (
         default: #FFFFFF,
-        50: rgba(255, 255, 255, 0.5)
+        90: #E4E4E7,
+        95: #F1F1F3,
+        97: #F7F7F8,
+        99: #FCFCFD,
     ),
     black: (
-        default: #000000
+        default: #000000,
     ),
-    light-grey: (
-        default: #FBFBFB
+    purple: (
+        default: #703BF7,
+        60: #703BF7,
+        65: #8254F8,
+        70: #946CF9,
+        75: #A685FA,
+        90: #DBCEFD,
+        95: #EDE7FE,
+        97: #F4F0FE,
+        99: #FBFAFF,
     ),
-    error: (
-        default: #FF1818
-    )
+    grey: (
+        default: #1A1A1A,
+        08: #141414,
+        10: #1A1A1A,
+        15: #262626,
+        20: #333333,
+        30: #4D4D4D,
+        40: #666666,
+        50: #808080,
+        60: #999999,
+    ),
 );
 
 // OPTIONAL - if default using color shade
@@ -86,175 +111,29 @@ $color: (
 
 // OPTIONAL - end
 
+/**
+ * Type scale.
+ *
+ * Holds ONLY sizes a component actually uses -- add a key when a component
+ * needs it, do not park speculative sizes here. Every key emits a
+ * --tdfs-<name> custom property, an %fs-<name> placeholder and an .fs-<name>
+ * class, so an unused key is dead weight in every stylesheet.
+ *
+ * Desktop values are literal design pixels from the 1920 comp. Mobile values
+ * are emitted at the 480 anchor, so store design * 1.28 and record the intent:
+ *     mobile: ( font-size: 25.6 )  // 20 @375
+ */
 $fontSizes: (
-    display-1: (
-        desktop: (
-            font-size: 70,
-            font-weight: 800,
-            line-height: 1.1
-        ),
-        mobile: (
-            font-size: 40,
-            text-decoration: underline
-        ),
-        480:(
-            text-transform: uppercase
-        ),
-    ),
-    heading-1: (
-        desktop: (
-            font-size: 48,
-            font-weight: 800,
-            line-height: 1.1
-        ),
-        mobile: (
-            font-size: 32,
-        )
-    ),
-    heading-2: (
-        desktop: (
-            font-size: 40,
-            font-weight: 600,
-            line-height: 1.1
-        ),
-        mobile: (
-            font-size: 24
-        )
-    ),
-    title-1: (
-        desktop: (
-            font-size: 18,
-            font-weight: 700
-        ),
-        mobile: (
-            font-size: 16,
-        )
-    ),
-    body-xl-bold: (
-        desktop: (
-            font-size: 24,
-            font-weight: 600
-        ),
-        mobile: (
-            font-size: 20,
-        )
-    ),
-    body-xl: (
-        desktop: (
-            font-size: 24,
-            line-height: 1.1,
-        ),
-        mobile: (
-            font-size: 14,
-        )
-    ),
-    body-l-bold: (
-        desktop: (
-            font-size: 20,
-            font-weight: 800,
-            line-height: 1.1
-        ),
-        mobile: (
-            font-size: 18
-        )
-    ),
-    body-l: (
-        desktop: (
-            font-size: 20,
-            line-height: 1.1
-        ),
-        mobile: (
-            font-size: 18
-        )
-    ),
-    body-m-medium: (
+    banner-text: (
         desktop: (
             font-size: 18,
             font-weight: 500,
             line-height: 1.5
         ),
+        // font-size only -- createFontExtend() iterates just the keys present
+        // here, so weight and line-height fall through from desktop
         mobile: (
-            font-size: 16
-        )
-    ),
-    body-m: (
-        desktop: (
-            font-size: 18,
-            line-height: 1.5
-        ),
-        mobile: (
-            font-size: 16
-        )
-    ),
-    body-s: (
-        desktop: (
-            font-size: 16
-        ),
-        mobile: (
-            font-size: 16
-        )
-    ),
-    nav-link: (
-        desktop: (
-            font-size: 18,
-        ),
-        1199: (
-            font-size: 24,
-        ),
-        767: (
-            font-size: 32
-        ),
-        mobile: (
-            font-size: 20
-        )
-    ),
-    button: (
-        desktop: (
-            font-size: 18,
-            font-weight: 500,
-            line-height: math.div(28, 18)
-        ),
-        mobile: (
-            font-size: 18
-        )
-    ),
-    form-title: (
-        desktop: (
-            font-size: 18,
-            font-weight: 500
-        ),
-        mobile: (
-            font-size: 16
-        )
-    ),
-    table-header: (
-        desktop: (
-            font-size: 14,
-            font-weight: 500,
-            line-height: math.div(16, 14)
-        ),
-        mobile: (
-            font-size: 14
-        )
-    ),
-    tag-bold: (
-        desktop: (
-            font-size: 14,
-            font-weight: 600,
-            line-height: math.div(16, 14)
-        ),
-        mobile: (
-            font-size: 12
-        )
-    ),
-    tag: (
-        desktop: (
-            font-size: 14,
-            font-weight: 600,
-            line-height: math.div(16, 14)
-        ),
-        mobile: (
-            font-size: 14
+            font-size: 14.77 // 12 @390
         )
     )
 );

@@ -155,11 +155,55 @@ const drgFadeInit = (root = document) => {
 // published so a module's component.js can re-arm after injecting markup
 window.DRG.fn.fadeInit = drgFadeInit;
 
+/**
+ * Header banner dismissal.
+ *
+ * Only the CLICK lives here. Hiding an already-dismissed banner happens in a
+ * synchronous inline script beside the markup in
+ * template-parts/header-banner/index.php, because this bundle is enqueued in the
+ * footer -- hiding from here would let the bar paint first and flash on every
+ * page load.
+ *
+ * The stored value is a hash of the banner copy, so rewording the message
+ * produces a new key and the banner returns for everyone who dismissed the old
+ * one.
+ */
+const DRG_BANNER_STORE = 'drgBannerDismissed';
+
+const drgBannerInit = () => {
+    // absent on any page where the banner is disabled or already dismissed
+    const banner = document.querySelector('[data-drg-banner-key]');
+    if (!banner) return;
+
+    const close = banner.querySelector('[data-drg-banner-close]');
+    if (!close) return;
+
+    close.addEventListener('click', () => {
+        banner.hidden = true;
+
+        // writing THROWS in some privacy modes -- the banner still closes for
+        // this page view, it just will not be remembered
+        try {
+            window.localStorage.setItem(DRG_BANNER_STORE, banner.dataset.drgBannerKey || '');
+        } catch (error) {
+            // storage unavailable, nothing to persist
+        }
+    });
+};
+
 // scripts are enqueued in the footer, so the DOM is already parsed -- the guard
 // is for the day someone moves them to the head or adds defer
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => drgFadeInit(), { once: true });
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+            drgFadeInit();
+            drgBannerInit();
+        },
+        { once: true }
+    );
 } else {
     drgFadeInit();
+    drgBannerInit();
 }
 

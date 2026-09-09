@@ -1,3 +1,4 @@
+@use 'sass:meta';
 @use '_adminConfig.scss' as *;
 
 /**
@@ -13,12 +14,34 @@ $gunmetal          : #242e3b;
 $dark-jungle-green : #161d25;
 $charcoal          : #36404d;
 
-$myrtle-green      : #31836d;
-$zomp              : #3fa88c;
-$drg-green    : #10af13;
-$india-green       : #0e9810;
-$deep-green        : #0a690b;
-$chinese-silver    : #0a690b;
+/**
+ * Brand colours, derived from the project palette rather than written literal.
+ *
+ * Named for their ROLE, not their hue -- the neutrals above keep the
+ * colour-name convention because they are literal hex, but these follow
+ * $color, so a hue name here would go stale the moment the palette changes.
+ *
+ * Hover and active states come through colorMod() rather than a palette shade,
+ * because the purple ramp runs 60..99 -- LIGHTER as the key rises -- and these
+ * states need to go DARKER than the base. Same reason $link-color in
+ * _adminConfig.scss is written colorMod($primary, -30%).
+ */
+$brand             : color( purple );
+$brand-hover       : colorMod( color( purple ), -20% );
+$brand-dark        : colorMod( color( purple ), -35% );
+$brand-link        : colorMod( color( purple ), -30% );
+$brand-link-hover  : color( purple );
+
+/**
+ * $brand as a bare hex for the checkbox SVG data-URI below, which cannot take a
+ * colour object -- '#' has to be percent-encoded inside the URI, so it is
+ * stripped here and re-added as %23 at the call site.
+ *
+ * Derived from $brand, NOT from _adminConfig's $checkMark. That one follows
+ * $primary; this scheme is deliberately independent of it (it stayed green
+ * while $primary was orange), and borrowing it would couple the two silently.
+ */
+$brandCheckMark    : str-replace( meta.inspect( $brand ), '#', '' );
 
 $flame             : #d54e21;
 $dark-pastel-red   : #c0461e;
@@ -145,11 +168,11 @@ body {
 
 /* Links */
 a {
-    color: $myrtle-green;
+    color: $brand-link;
 }
 
 a:hover, a:active, a:focus {
-    color: $zomp;
+    color: $brand-link-hover;
 }
 
 #post-body .misc-pub-post-status:before,
@@ -162,16 +185,16 @@ span.wp-media-buttons-icon:before {
 
 /* Forms */
 input[type=checkbox]:checked::before {
-    content: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%2310af13%27%2F%3E%3C%2Fsvg%3E");
+    content: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23#{$brandCheckMark}%27%2F%3E%3C%2Fsvg%3E");
 }
 
 input[type=radio]:checked::before {
-    background: $drg-green;
+    background: $brand;
 }
 
 .wp-core-ui input[type="reset"]:hover,
 .wp-core-ui input[type="reset"]:active {
-    color: $zomp;
+    color: $brand-link-hover;
 }
 
 input[type="text"]:focus,
@@ -193,8 +216,8 @@ input[type="checkbox"]:focus,
 input[type="radio"]:focus,
 select:focus,
 textarea:focus {
-    border-color: $drg-green;
-    box-shadow: 0 0 0 1px $drg-green;
+    border-color: $brand;
+    box-shadow: 0 0 0 1px $brand;
 }
 
 /* Core UI */
@@ -206,8 +229,8 @@ a,
 
 .wp-core-ui .button,
 .wp-core-ui .button-secondary {
-    color: $drg-green;
-    border-color: $drg-green;
+    color: $brand;
+    border-color: $brand;
 }
 
 .wp-core-ui .button.hover,
@@ -216,70 +239,82 @@ a,
 .wp-core-ui .button.focus,
 .wp-core-ui .button:focus,
 .wp-core-ui .button-secondary:focus {
-    border-color: $india-green;
-    color: $india-green;
+    border-color: $brand-hover;
+    color: $brand-hover;
 }
 
 .wp-core-ui .button.focus,
 .wp-core-ui .button:focus,
 .wp-core-ui .button-secondary:focus {
-    border-color: $drg-green;
-    color: $india-green;
-    box-shadow: 0 0 0 1px $drg-green;
+    border-color: $brand;
+    color: $brand-hover;
+    box-shadow: 0 0 0 1px $brand;
 }
 
 .wp-core-ui .button:active {
-    background: $india-green;
-    border-color: $india-green;
+    background: $brand-hover;
+    border-color: $brand-hover;
     color: $white;
 }
 
 .wp-core-ui .button.active,
 .wp-core-ui .button.active:focus,
 .wp-core-ui .button.active:hover {
-    border-color: $india-green;
-    color: $india-green;
-    box-shadow: inset 0 2px 5px -3px $india-green;
+    border-color: $brand-hover;
+    color: $brand-hover;
+    box-shadow: inset 0 2px 5px -3px $brand-hover;
 }
 
 .wp-core-ui .button-primary {
-    background: $drg-green;
-    border-color: $drg-green;
+    background: $brand;
+    border-color: $brand;
     color: $white;
 }
 
 .wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus {
-    background: $drg-green;
-    border-color: $india-green;
+    background: $brand;
+    border-color: $brand-hover;
     color: $white;
 }
 
 .wp-core-ui .button-primary:focus {
-    box-shadow: 0 0 0 1px $white, 0 0 0 3px $drg-green;
+    box-shadow: 0 0 0 1px $white, 0 0 0 3px $brand;
 }
 
 .wp-core-ui .button-primary:active {
-    background: $india-green;
-    border-color: $india-green;
+    background: $brand-hover;
+    border-color: $brand-hover;
     color: $white;
 }
 
 .wp-core-ui .button-primary.active, .wp-core-ui .button-primary.active:focus, .wp-core-ui .button-primary.active:hover {
-    background: $drg-green;
+    background: $brand;
     color: $white;
-    border-color: $deep-green;
+    border-color: $brand-dark;
     box-shadow: inset 0 2px 5px -3px black;
 }
 
+/**
+ * Disabled primary button.
+ *
+ * Keeps the brand background and fades the LABEL, which is what WordPress core
+ * does (rgba white at 40% over the primary colour). The previous rule painted a
+ * dark brand colour on a brand background -- 1.28:1, effectively unreadable, and
+ * the Customizer ships its Save button disabled, so that was the first thing you
+ * hit there.
+ *
+ * Fading the text rather than greying the whole control also keeps a disabled
+ * primary distinguishable from a disabled secondary.
+ */
 .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
-    color: $chinese-silver !important;
-    background: $india-green !important;
-    border-color: $india-green !important;
+    color: rgba($white, .4) !important;
+    background: $brand !important;
+    border-color: $brand !important;
     text-shadow: none !important;
 }
 
 .wp-core-ui .button-group > .button.active {
-    border-color: $drg-green;
+    border-color: $brand;
 }
 
 .wp-core-ui .wp-ui-primary {
@@ -293,11 +328,11 @@ a,
 
 .wp-core-ui .wp-ui-highlight {
     color: $white;
-    background-color: $drg-green;
+    background-color: $brand;
 }
 
 .wp-core-ui .wp-ui-text-highlight {
-    color: $drg-green;
+    color: $brand;
 }
 
 .wp-core-ui .wp-ui-notification {
@@ -314,23 +349,23 @@ a,
 }
 
 .wrap .page-title-action {
-    color: $drg-green;
-    border-color: $drg-green;
+    color: $brand;
+    border-color: $brand;
 }
 
 /* List tables */
 .wrap .add-new-h2:hover,
 .wrap .page-title-action:hover {
     color: $white;
-    background-color: $india-green;
-    border-color: $drg-green;
+    background-color: $brand-hover;
+    border-color: $brand;
 }
 
 .wrap .page-title-action:active, .wrap .page-title-action:focus {
     color: $white;
-    background-color: $india-green;
-    border-color: $drg-green;
-    box-shadow: 0 0 0 1px $india-green;
+    background-color: $brand-hover;
+    border-color: $brand;
+    box-shadow: 0 0 0 1px $brand-hover;
 }
 
 .view-switch a.current:before {
@@ -361,7 +396,7 @@ a,
 #adminmenu li.opensub > a.menu-top,
 #adminmenu li > a.menu-top:focus {
     color: $white;
-    background-color: $drg-green;
+    background-color: $brand;
 }
 
 #adminmenu li.menu-top:hover div.wp-menu-image:before,
@@ -411,7 +446,7 @@ a,
 #adminmenu a.wp-has-current-submenu:focus + .wp-submenu a:hover,
 #adminmenu .wp-has-current-submenu.opensub .wp-submenu a:focus,
 #adminmenu .wp-has-current-submenu.opensub .wp-submenu a:hover {
-    color: $drg-green;
+    color: $brand;
 }
 
 /* Admin Menu: current */
@@ -426,7 +461,7 @@ a,
 #adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a:focus,
 #adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:hover,
 #adminmenu .wp-has-current-submenu.opensub .wp-submenu li.current a:focus {
-    color: $drg-green;
+    color: $brand;
 }
 
 ul#adminmenu a.wp-has-current-submenu:after,
@@ -439,7 +474,7 @@ ul#adminmenu > li.current > a.current:after {
 #adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head,
 .folded #adminmenu li.current.menu-top {
     color: $white;
-    background: $drg-green;
+    background: $brand;
 }
 
 #adminmenu li.wp-has-current-submenu div.wp-menu-image:before,
@@ -475,7 +510,7 @@ ul#adminmenu > li.current > a.current:after {
 
 #collapse-button:hover,
 #collapse-button:focus {
-    color: $drg-green;
+    color: $brand;
 }
 
 /* Admin Bar */
@@ -503,14 +538,14 @@ ul#adminmenu > li.current > a.current:after {
 #wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
 #wpadminbar.nojs .ab-top-menu > li.menupop:hover > .ab-item,
 #wpadminbar .ab-top-menu > li.menupop.hover > .ab-item {
-    color: $drg-green;
+    color: $brand;
     background: $dark-jungle-green;
 }
 
 #wpadminbar:not(.mobile) > #wp-toolbar li:hover span.ab-label,
 #wpadminbar:not(.mobile) > #wp-toolbar li.hover span.ab-label,
 #wpadminbar:not(.mobile) > #wp-toolbar a:focus span.ab-label {
-    color: $drg-green;
+    color: $brand;
 }
 
 #wpadminbar:not(.mobile) li:hover .ab-icon:before,
@@ -560,7 +595,7 @@ ul#adminmenu > li.current > a.current:after {
 #wpadminbar li.hover .ab-item:before,
 #wpadminbar li:hover #adminbarsearch:before,
 #wpadminbar li #adminbarsearch.adminbar-focused:before {
-    color: $drg-green;
+    color: $brand;
 }
 
 #wpadminbar .quicklinks li a:hover .blavatar,
@@ -569,7 +604,7 @@ ul#adminmenu > li.current > a.current:after {
 #wpadminbar .menupop .menupop > .ab-item:hover:before,
 #wpadminbar.mobile .quicklinks .ab-icon:before,
 #wpadminbar.mobile .quicklinks .ab-item:before {
-    color: $drg-green;
+    color: $brand;
 }
 
 #wpadminbar.mobile .quicklinks .hover .ab-icon:before,
@@ -617,7 +652,7 @@ ul#adminmenu > li.current > a.current:after {
 }
 
 #wpadminbar #wp-admin-bar-user-info a:hover .display-name {
-    color: $drg-green;
+    color: $brand;
 }
 
 #wpadminbar #wp-admin-bar-user-info .username {
@@ -626,50 +661,50 @@ ul#adminmenu > li.current > a.current:after {
 
 /* Pointers */
 .wp-pointer .wp-pointer-content h3 {
-    background-color: $drg-green;
-    border-color: $india-green;
+    background-color: $brand;
+    border-color: $brand-hover;
 }
 
 .wp-pointer .wp-pointer-content h3:before {
-    color: $drg-green;
+    color: $brand;
 }
 
 .wp-pointer.wp-pointer-top .wp-pointer-arrow,
 .wp-pointer.wp-pointer-top .wp-pointer-arrow-inner,
 .wp-pointer.wp-pointer-undefined .wp-pointer-arrow,
 .wp-pointer.wp-pointer-undefined .wp-pointer-arrow-inner {
-    border-bottom-color: $drg-green;
+    border-bottom-color: $brand;
 }
 
 /* Media */
 .media-item .bar,
 .media-progress-bar div {
-    background-color: $drg-green;
+    background-color: $brand;
 }
 
 .details.attachment {
-    box-shadow: inset 0 0 0 3px $white, inset 0 0 0 7px $drg-green;
+    box-shadow: inset 0 0 0 3px $white, inset 0 0 0 7px $brand;
 }
 
 .attachment.details .check {
-    background-color: $drg-green;
-    box-shadow: 0 0 0 1px $white, 0 0 0 2px $drg-green;
+    background-color: $brand;
+    box-shadow: 0 0 0 1px $white, 0 0 0 2px $brand;
 }
 
 .media-selection .attachment.selection.details .thumbnail {
-    box-shadow: 0 0 0 1px $white, 0 0 0 3px $drg-green;
+    box-shadow: 0 0 0 1px $white, 0 0 0 3px $brand;
 }
 
 /* Themes */
 .theme-browser .theme.active .theme-name,
 .theme-browser .theme.add-new-theme a:hover:after,
 .theme-browser .theme.add-new-theme a:focus:after {
-    background: $drg-green;
+    background: $brand;
 }
 
 .theme-browser .theme.add-new-theme a:hover span:after,
 .theme-browser .theme.add-new-theme a:focus span:after {
-    color: $drg-green;
+    color: $brand;
 }
 
 .theme-section.current,
@@ -688,7 +723,7 @@ body.more-filters-opened .more-filters:before {
 
 body.more-filters-opened .more-filters:hover,
 body.more-filters-opened .more-filters:focus {
-    background-color: $drg-green;
+    background-color: $brand;
     color: $white;
 }
 
@@ -699,7 +734,7 @@ body.more-filters-opened .more-filters:focus:before {
 
 /* Widgets */
 .widgets-chooser li.widgets-chooser-selected {
-    background-color: $drg-green;
+    background-color: $brand;
     color: $white;
 }
 
@@ -715,7 +750,7 @@ div#wp-responsive-toggle a:before {
 
 .wp-responsive-open div#wp-responsive-toggle a {
     border-color: transparent;
-    background: $drg-green;
+    background: $brand;
 }
 
 .wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle a {
@@ -732,5 +767,45 @@ div#wp-responsive-toggle a:before {
 .mce-container.mce-menu .mce-menu-item:focus,
 .mce-container.mce-menu .mce-menu-item-normal.mce-active,
 .mce-container.mce-menu .mce-menu-item-preview.mce-active {
-    background: $drg-green;
+    background: $brand;
+}
+/**
+ * Toolbar Publish Button plugin.
+ *
+ * The plugin paints its button from its own setting (Settings -> Toolbar
+ * Publish Button), default #0073AA, injected at runtime as a <style> tag from
+ * js/tpb.js -- so it does not follow this scheme on its own.
+ *
+ * Its selector scores (0,2,3,1). Prefixing `body` makes this (0,2,3,2), which
+ * wins on specificity alone -- no !important needed, and none would work
+ * reliably anyway against a tag injected after this stylesheet.
+ *
+ * Only the background is overridden: the plugin already sets the label to #fff
+ * and handles hover with filter: brightness(1.1), both of which read correctly
+ * on the brand colour.
+ *
+ * Trade-off: this beats the plugin's own colour picker, so changing that
+ * setting will appear to do nothing while this rule is here.
+ */
+body #wpadminbar:not(.mobile) #wp-toolbar li.wpuxss-tpb > .ab-item {
+    background-color: $brand;
+}
+
+/**
+ * Admin bar site icon.
+ *
+ * Core paints a light grey plate behind the favicon
+ * (wp-includes/css/admin-bar.css -- "matching my-account (user avatar) node's
+ * background"). Deliberate on their part, but it frames a transparent or dark
+ * favicon with a grey slab against the dark bar.
+ *
+ * `body` prefix takes this to (0,2,2,1) against core's (0,2,2,0), so it wins on
+ * specificity rather than on load order -- the colour scheme stylesheet is not
+ * guaranteed to print after the concatenated core styles from load-styles.php.
+ *
+ * Background only. Core's mobile rule repositions the icon without re-setting
+ * background, so this one declaration covers every breakpoint.
+ */
+body #wpadminbar #wp-admin-bar-site-name > .ab-item .site-icon {
+    background: transparent;
 }

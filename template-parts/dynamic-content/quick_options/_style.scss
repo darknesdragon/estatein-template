@@ -1,0 +1,10 @@
+@use 'config' as *;
+
+// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
+// | Module: quick_options
+// |_________________________________________| //
+
+.drg-quick-options {
+    @include vwUnit(padding-top, 120, 64);
+    @include vwUnit(padding-bottom, 120, 64);
+}
