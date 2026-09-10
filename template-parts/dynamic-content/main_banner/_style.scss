@@ -23,6 +23,11 @@
     }
 
     &__inner {
+
+        @media (max-width: 1199px) {
+            padding-top: unit(64, 1199);
+        }
+
         @include vwMobile( padding-top, 64 )
     }
 
