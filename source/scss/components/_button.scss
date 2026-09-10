@@ -14,7 +14,61 @@
 .drg-button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
+
+    /**
+     * The filled/outlined pill.
+     *
+     * Bootstrap's `buttons` module is commented out in _init-bootstrap.scss, so
+     * .btn / .btn-primary / .btn-secondary carry NO styles from the framework --
+     * everything here is the only definition. button.php has been emitting those
+     * class names since the starter with nothing behind them.
+     *
+     * Geometry deliberately matches the navbar pill (12/20, radius 10) so a
+     * button and a nav item read as one family.
+     */
+    &.btn {
+        @include typo(body-m);
+        @include vwUnit(padding-block, 12, 14.77);   // 12 @390
+        @include vwUnit(padding-inline, 20, 24.62);  // 20 @390
+
+        border-radius: 10px;
+
+        // reserved at rest so the hover border adds no layout shift
+        border: 1px solid transparent;
+
+        @include transition(all .3s ease);
+    }
+
+    &.btn-primary {
+        color: color( white );
+        background-color: color( purple );
+        border-color: color( purple );
+    }
+
+    // the outlined variant: no fill, just an edge
+    &.btn-secondary {
+        color: color( white );
+        background-color: transparent;
+        border-color: color( grey, 15 );
+    }
+
+    /**
+     * One hover for every filled shape -- purple 75 with a DARK label.
+     *
+     * White on purple 75 measures 2.85:1, under AA. grey/08 on the same fill is
+     * 6.46:1. The fill and the label are a pair; changing one without the other
+     * breaks it.
+     */
+    &.btn-primary,
+    &.btn-secondary {
+        @include fullState {
+            color: color( grey, 08 );
+            background-color: color( purple, 75 );
+            border-color: color( purple, 75 );
+        }
+    }
 
     /**
      * The bare-label shape. Takes neither Bootstrap's .btn nor our .btn

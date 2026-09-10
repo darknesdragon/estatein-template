@@ -24,7 +24,7 @@
  * makes that structurally impossible rather than merely bounded, and matches the
  * decision that nesting reusable blocks is not wanted.
  */
-function drg_render_page_sections( $field_name = 'page_section', $post_id = null, $depth = 0 ) {
+function drg_render_page_sections( $field_name = 'page_sections', $post_id = null, $depth = 0 ) {
     if ( ! function_exists( 'have_rows' ) || ! function_exists( 'get_row_layout' ) ) {
         return;
     }
@@ -65,7 +65,7 @@ function drg_render_page_sections( $field_name = 'page_section', $post_id = null
  * render unstyled. global_module itself is never added, since it has no assets of
  * its own.
  */
-function drg_get_page_section_layouts( $post_id = null, $field_name = 'page_section', $depth = 0 ) {
+function drg_get_page_section_layouts( $post_id = null, $field_name = 'page_sections', $depth = 0 ) {
     if ( ! function_exists( 'get_field' ) ) {
         return array();
     }
@@ -406,4 +406,28 @@ function drg_phone_href( $number ) {
     $digits = preg_replace( '/\D/', '', $number );
 
     return '' === $digits ? '' : $plus . $digits;
+}
+
+/**
+ * Compact number for stat displays: 1500 -> 1.5k, 10000 -> 10k, 1000000 -> 1M.
+ *
+ * Strips non-numerics first, so a value an editor typed as "200+" formats as
+ * "200" rather than failing the cast.
+ */
+function drg_format_compact_number( $value ) {
+    $number = (float) preg_replace( '/[^0-9.]/', '', (string) $value );
+
+    $trim = function ( $n ) {
+        return rtrim( rtrim( number_format( $n, 1, '.', '' ), '0' ), '.' );
+    };
+
+    if ( $number >= 1000000 ) {
+        return $trim( $number / 1000000 ) . 'M';
+    }
+
+    if ( $number >= 1000 ) {
+        return $trim( $number / 1000 ) . 'k';
+    }
+
+    return $trim( $number );
 }

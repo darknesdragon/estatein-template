@@ -72,9 +72,17 @@
         cursor: pointer;
         @include transition(all .3s ease);
 
+        /**
+         * Shared hover across every filled control in the theme: purple 75 with
+         * DARK text.
+         *
+         * White on purple 75 is only 2.85:1 -- below AA. Flipping the label to
+         * grey/08 lifts the same fill to 6.46:1, which is why the pair moves
+         * together and neither half should be changed alone.
+         */
         @include fullState {
-            color: color( white );
-            background-color: color( purple );
+            color: color( grey, 08 );
+            background-color: color( purple, 75 );
             box-shadow: 0 0 0;
         }
 
@@ -138,7 +146,7 @@
      * keep in sync, and everything here is custom-styled anyway.
      */
     &__menu > li > a {
-        @include typo(nav-link);
+        @include typo(body-m);
         @include vwUnit(padding-block, 12, 14.77);   // 12 @390
         @include vwUnit(padding-inline, 20, 24.62);  // 20 @390
 
@@ -180,12 +188,13 @@
         }
     }
 
-    // hover outranks both resting states
+    // hover outranks both resting states -- see the toggler above for why the
+    // label goes dark rather than staying white
     &__menu > li > a {
         @include fullState {
-            color: color( white );
-            background-color: color( purple );
-            border-color: color( purple );
+            color: color( grey, 08 );
+            background-color: color( purple, 75 );
+            border-color: color( purple, 75 );
         }
     }
 

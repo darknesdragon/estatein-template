@@ -1,10 +1,214 @@
 @use 'config' as *;
 
-// |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾| //
-// | Module: main_banner
-// |_________________________________________| //
+// Module: main_banner -- see docs/components/main-banner.md
 
 .drg-main-banner {
-    @include vwUnit(padding-top, 120, 64);
-    @include vwUnit(padding-bottom, 120, 64);
+    position: relative;
+    background-color: color( grey, 08 );
+    @include vwDesktop(min-height, 814);
+
+    &__image-container {
+        position: absolute;
+        inset-block: 0;
+        right: 0;
+        width: 50%;
+        @include vwDesktop(padding-left, 40);
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__inner {
+        @include vwMobile( padding-top, 64 )
+    }
+
+    &__content {
+        width: 50%;
+        @include vwDesktop(padding-right, 40);
+        @include vwDesktop(padding-block, 80);
+    }
+
+    &__title {
+        @include typo(heading-1);
+        @include vwUnit(margin-bottom, 24, 19.69); // 16 @390
+        color: color( white );
+        margin-top: 0;
+    }
+
+    &__description {
+        @include typo(body-m);
+        @include vwUnit(margin-bottom, 40, 29.54); // 24 @390
+        color: color( grey, 60 );
+        margin-top: 0;
+    }
+
+    &__buttons {
+        display: flex;
+        @include vwUnit(column-gap, 20, 0);
+        @include vwUnit(margin-bottom, 60, 29.54); // 24 @390
+        @include vwStacked(row-gap, 12);
+    }
+
+    &__stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        @include vwUnit(gap, 23, 12.31); // 10 @390
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__stat {
+        @include vwUnit(padding-block, 20, 19.69);  // 16 @390
+        @include vwUnit(padding-inline, 24, 19.69); // 16 @390
+        background-color: color( grey, 10 );
+        border: 1px solid color( grey, 15 );
+        border-radius: 10px;
+    }
+
+    &__stat-number {
+        @include typo(stats-number);
+        color: color( white );
+        margin: 0;
+    }
+
+    &__stat-label {
+        @include typo(body-m);
+        color: color( grey, 60 );
+        margin: 0;
+    }
+
+    &__badge {
+        position: absolute;
+        @include vwDesktop(top, 235);
+        @include vwUnit(left, 60, 0); 
+        @include vwUnit(width, 175, 139.08);  // 113 @390
+        @include vwUnit(height, 175, 139.08);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+
+        background-color: color( grey, 08 );
+        border: 1px solid color( grey, 15 );
+        border-radius: 50%;
+        color: color( white );
+        text-decoration: none;
+    }
+
+    /**
+     * Sized in USER UNITS, not CSS px: the svg carries viewBox="0 0 100 100"
+     * and scales with the badge, so a fixed number here keeps the type
+     * proportional at every breakpoint. A vwUnit value would not scale with the
+     * viewBox and the ring would drift.
+     */
+    &__badge-text {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: .1em;
+        fill: currentColor;
+    }
+
+    // the inner ring; a sibling of the curved text, so the spin leaves it upright
+    &__badge-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44.6%;
+        aspect-ratio: 1;
+
+        @include vwUnit(font-size, 40, 31.79); // 25.8 @390
+
+        background-color: color( grey, 10 );
+        border: 1px solid color( grey, 15 );
+        border-radius: 50%;
+
+        @include transition(all .3s ease);
+    }
+
+    /**
+     * Only the linked badge has an affordance, so only it gets a hover.
+     *
+     * The pair is .drg-button's -- purple 75 fill with a grey/08 glyph at
+     * 6.46:1. White on that fill is 2.85:1 and fails AA, so fill and glyph move
+     * together. If the button's hover pair changes, this changes with it.
+     *
+     * The curved text is untouched: it is a sibling taking `fill: currentColor`
+     * from the badge's own `color`, which this rule never sets.
+     */
+    &__badge:is(a) {
+        @include fullState {
+            .drg-main-banner__badge-icon {
+                color: color( grey, 08 );
+                background-color: color( purple, 75 );
+                border-color: color( purple, 75 );
+            }
+        }
+    }
+
+    @media (max-width: 1199.98px) {
+        min-height: 0;
+
+        // stays relative, not static: it is the badge's containing block, and
+        // going static would reparent the badge to the section. no overflow
+        // clip either -- the badge is meant to hang past the bottom edge
+        &__image-container {
+            position: relative;
+            width: auto;
+            padding-left: 0;
+            margin-inline: $containerPadding;
+        }
+
+        &__image {
+            border-radius: 10px;
+            border: 1px solid color(grey, 15);
+        }
+
+        &__content {
+            width: auto;
+            padding-right: 0;
+            padding-block: 0;
+        }
+
+        &__buttons {
+            flex-direction: column;
+        }
+
+        &__button {
+            width: 100%;
+        }
+
+        &__stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        &__stat:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+
+        &__badge {
+            top: auto;
+            left: 0;
+            transform: none;
+        }
+    }
+
+    // flush with the image's left edge, ~1/3 of the badge hanging below it.
+    // vwStacked carries its own media query, so it sits outside the block above
+    // -- and it covers 768-1199, which vwMobile alone would leave without a value.
+    &__badge {
+        @include vwStacked(bottom, -43.08); // -35 @390
+    }
+
+    @include vwStacked(padding-top, 49.23); // 40 @390
 }

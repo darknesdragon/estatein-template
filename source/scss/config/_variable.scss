@@ -137,11 +137,17 @@ $fontSizes: (
         )
     ),
     /**
-     * Identical to banner-text on desktop; the two diverge only on mobile
-     * (16 vs 12), which is why both keys exist. If those ever converge they
-     * collapse into one.
+     * Body copy: nav links, button labels, section descriptions, stat labels.
+     *
+     * Was `nav-link` until the main banner needed the identical size for its
+     * description and stat labels. Renamed rather than duplicated -- every key
+     * emits a --tdfs- variable, an %fs- placeholder and an .fs- class, so two
+     * byte-identical keys are pure waste and can silently drift apart.
+     *
+     * Still identical to banner-text on desktop; those two diverge on mobile
+     * (16 vs 12), which is why they stay separate.
      */
-    nav-link: (
+    body-m: (
         desktop: (
             font-size: 18,
             font-weight: 500,
@@ -149,6 +155,30 @@ $fontSizes: (
         ),
         mobile: (
             font-size: 19.69 // 16 @390
+        )
+    ),
+    heading-1: (
+        desktop: (
+            font-size: 60,
+            font-weight: 600,
+            line-height: 1.2
+        ),
+        mobile: (
+            font-size: 34.46 // 28 @390
+        )
+    ),
+    /**
+     * Named for the thing it sizes, not a heading level -- it never renders as
+     * a heading, so calling it heading-2 would mislead every later reader.
+     */
+    stats-number: (
+        desktop: (
+            font-size: 40,
+            font-weight: 700,
+            line-height: 1.5
+        ),
+        mobile: (
+            font-size: 29.54 // 24 @390
         )
     )
 );
