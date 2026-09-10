@@ -127,9 +127,6 @@ const force = flags.has('--force');
 const fromIndex = argv.indexOf('--from');
 const isLocal = fromIndex !== -1;
 
-// the fromIndex === -1 guard is load-bearing: without --from, fromIndex is -1 and
-// `i !== fromIndex + 1` reads as `i !== 0`, which drops the icon id itself and
-// leaves target undefined -- the Iconify path could never receive its argument
 const positional = argv.filter((a, i) => !a.startsWith('--') && (fromIndex === -1 || i !== fromIndex + 1));
 const target = positional[0];
 

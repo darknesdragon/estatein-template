@@ -408,12 +408,6 @@ function drg_phone_href( $number ) {
     return '' === $digits ? '' : $plus . $digits;
 }
 
-/**
- * Compact number for stat displays: 1500 -> 1.5k, 10000 -> 10k, 1000000 -> 1M.
- *
- * Strips non-numerics first, so a value an editor typed as "200+" formats as
- * "200" rather than failing the cast.
- */
 function drg_format_compact_number( $value ) {
     $number = (float) preg_replace( '/[^0-9.]/', '', (string) $value );
 

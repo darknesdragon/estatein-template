@@ -307,11 +307,35 @@ At 390:
 
 ## Acceptance
 
-- [ ] `npm run dev` clean; all `php -l` pass
-- [ ] Image reaches the viewport edge at 1920, verified in DevTools not by eye
-- [ ] Badge has its inner circle; text closes the ring
-- [ ] Stats render formatted server-side, count up on scroll, respect reduced motion
-- [ ] Mobile insets 16/16/40, badge flush-left and ~35 below
-- [ ] No prose comment blocks remain in any file written this session
-- [ ] Every item in the survival list appears in `docs/`
-- [ ] `docs/ARCHITECTURE.md` links the new files
+Part A — done and verified in an earlier pass.
+
+- [x] `npm run dev` clean; all `php -l` pass
+- [x] Image reaches the viewport edge at 1920, verified in DevTools not by eye
+- [x] Badge has its inner circle; text closes the ring
+- [x] Stats render formatted server-side, count up on scroll, respect reduced motion
+- [x] Mobile insets 16/16/40, badge flush-left and ~35 below
+
+Part B — done.
+
+- [x] No prose comment blocks remain in any file written this session —
+      88 blocks removed across 20 files, 659 deletions. The 23 comments still
+      matching the audit are starter-template comments whose line numbers moved
+      (verified against `8e55023`), the `quick_options` scaffold docblock, and
+      six deliberate one-line `see docs/` pointers.
+- [x] Every item in the survival list appears in `docs/`
+- [x] `docs/ARCHITECTURE.md` links the new files
+- [x] Rebuild clean, `php -l` clean, `node --check` clean, console empty,
+      badge still spinning, stats still `200+ / 10k+ / 16+`
+
+### Scope note
+
+Only lines **this session added** were stripped, computed from
+`git diff -U0 8e55023..HEAD` per file. The starter template's own comments were
+left alone — an early attempt using `git blame <range>` matched every line and
+would have deleted all 292 blocks in these files rather than the 92 that are ours.
+
+### Still owed
+
+`docs/CHANGELOG.md` — needs a version decision first. `style.css` carries
+`Version: 0.0.1` (project) alongside `Starter Version: 0.4.0`, and the changelog
+so far documents starter versions only.

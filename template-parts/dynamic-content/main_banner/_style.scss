@@ -101,12 +101,6 @@
         text-decoration: none;
     }
 
-    /**
-     * Sized in USER UNITS, not CSS px: the svg carries viewBox="0 0 100 100"
-     * and scales with the badge, so a fixed number here keeps the type
-     * proportional at every breakpoint. A vwUnit value would not scale with the
-     * viewBox and the ring would drift.
-     */
     &__badge-text {
         position: absolute;
         inset: 0;
@@ -119,7 +113,6 @@
         fill: currentColor;
     }
 
-    // the inner ring; a sibling of the curved text, so the spin leaves it upright
     &__badge-icon {
         display: flex;
         align-items: center;
@@ -136,16 +129,6 @@
         @include transition(all .3s ease);
     }
 
-    /**
-     * Only the linked badge has an affordance, so only it gets a hover.
-     *
-     * The pair is .drg-button's -- purple 75 fill with a grey/08 glyph at
-     * 6.46:1. White on that fill is 2.85:1 and fails AA, so fill and glyph move
-     * together. If the button's hover pair changes, this changes with it.
-     *
-     * The curved text is untouched: it is a sibling taking `fill: currentColor`
-     * from the badge's own `color`, which this rule never sets.
-     */
     &__badge:is(a) {
         @include fullState {
             .drg-main-banner__badge-icon {
@@ -159,9 +142,6 @@
     @media (max-width: 1199.98px) {
         min-height: 0;
 
-        // stays relative, not static: it is the badge's containing block, and
-        // going static would reparent the badge to the section. no overflow
-        // clip either -- the badge is meant to hang past the bottom edge
         &__image-container {
             position: relative;
             width: auto;
@@ -203,9 +183,6 @@
         }
     }
 
-    // flush with the image's left edge, ~1/3 of the badge hanging below it.
-    // vwStacked carries its own media query, so it sits outside the block above
-    // -- and it covers 768-1199, which vwMobile alone would leave without a value.
     &__badge {
         @include vwStacked(bottom, -43.08); // -35 @390
     }

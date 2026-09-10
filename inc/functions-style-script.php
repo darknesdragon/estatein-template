@@ -23,8 +23,6 @@ function drg_print_js($name, $filePath, $deps = array()) {
  * No need to change anything, just change the google_font_url variable to your theme font
  */
 function drg_add_google_fonts() {
-    // weights map to the four design states: 400 regular, 500 medium, 600 semiBold, 700 bold
-    // keep in sync with $fontPrimary in source/scss/config/_variable.scss
     $google_font_url = 'https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap';
     
     $onloadVal = "this.media='all'";

@@ -117,8 +117,6 @@ $buttons = is_array( $buttons ) ? $buttons : array();
                         <li class="drg-main-banner__stat">
                             <?php if ( $stat_number = get_sub_field( 'number' ) ) : ?>
                                 <?php
-                                // the finished value renders server-side, so no-JS and
-                                // pre-hydration are already correct; JS only counts up to it
                                 $stat_raw = (float) preg_replace( '/[^0-9.]/', '', (string) $stat_number );
                                 ?>
                                 <p class="drg-main-banner__stat-number" data-drg-count="<?php echo esc_attr( $stat_raw ); ?>">

@@ -5,7 +5,6 @@
 // main Bootstrap Module
 @use 'config/_init-bootstrap.scss';
 
-// shared components -- markup lives in template-parts/, so the CSS is global
 @use 'components/button';
 @use 'components/header-banner';
 @use 'components/navbar';
@@ -65,33 +64,6 @@ a, .btn {
 // | CUSTOM CODE START HERE                  | //
 // |_________________________________________| //
 
-/**
- * Full-bleed container that freezes with the design.
- *
- * Bootstrap's .container-fluid is width: 100% forever, but every vwUnit() value
- * caps at $maxViewport because vwSize() emits min(Xvw, Ypx). Past 1920 the box
- * would keep widening while its padding stood still, pulling the layout apart.
- * Capping the box on the same line the padding caps keeps a 2560 screen
- * pixel-identical to a 1920 one.
- *
- * max-width is tied to $maxViewport rather than a literal 1920px so the box and
- * every vwUnit() cap move together if that constant ever changes.
- *
- * Named drg- rather than overriding Bootstrap's .container-fluid, which IS
- * compiled (_init-bootstrap.scss imports `containers`) -- redefining it would
- * silently change behaviour anywhere Bootstrap or future markup relies on it.
- */
-/**
- * Sticky site header -- banner and navbar together.
- *
- * Sticky, not fixed, so the header keeps its space in flow and the page below
- * never jumps. It also means dismissing the banner simply shrinks the header,
- * with no offset to recalculate anywhere.
- *
- * z-index is Bootstrap's own $zindex-sticky (1020) on purpose: an arbitrary
- * number risks landing above the offcanvas backdrop at 1040, which would leave
- * the header clickable through the scrim while the menu is open.
- */
 .drg-header {
     position: sticky;
     top: 0;

@@ -3,6 +3,18 @@
 WordPress **classic** starter theme. Build with laravel-mix (webpack 5).
 Bootstrap 5 + GSAP. ACF Pro and other plugins installed via TGMPA.
 
+**Companion docs**
+
+| Doc | Covers |
+|---|---|
+| [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md) | palette, type scale, gutter, sizing anchors, contrast pairs, `.drg-container-fluid`, sticky header, font loading |
+| [ADMIN.md](ADMIN.md) | admin colour schemes, disabled-button contrast, third-party admin overrides |
+| [components/button.md](components/button.md) | `template-parts/button.php` and the shared hover pair |
+| [components/header-banner.md](components/header-banner.md) | the dismissible promo bar |
+| [components/navbar.md](components/navbar.md) | header, menu locations, offcanvas, icon sizing |
+| [components/main-banner.md](components/main-banner.md) | the `main_banner` module |
+| [CHANGELOG.md](CHANGELOG.md) | one entry per version bump |
+
 ## Folder layout
 
 ```
@@ -201,6 +213,15 @@ Three systems meet, and none needs a registration step:
 | Compile | `webpack.mix.js` | globs the directory at startup, emits `assets/css/module/{layout}.css` and `assets/js/module/{layout}.js` |
 | Enqueue | `drg_get_page_section_layouts()` | read during `wp_enqueue_scripts`, loads only the modules the page uses |
 
+> **`drg_render_page_sections()` and `drg_get_page_section_layouts()` are a
+> connected pair.** One draws the markup, the other enqueues that module's CSS
+> and JS, and both default to the same field name. Changing the default on one
+> without the other gives you a page whose modules render unstyled — or styles
+> loaded for modules that never appear.
+
+> **A module's JS must be named exactly `component.js`.** `webpack.mix.js` globs
+> that filename; anything else compiles to nothing, silently.
+
 ```bash
 npm run make:module <layout_name> [--js]
 ```
@@ -288,6 +309,11 @@ wrong path. The order of operations inside it is load-bearing and commented as s
 
 The fetch happens at build time on a developer machine only. The site never depends
 on Iconify at runtime and icons work with JavaScript disabled.
+
+> **`tools/make-icon.js` — the `fromIndex === -1` guard is load-bearing.**
+> Without `--from`, `fromIndex` is `-1`, so `i !== fromIndex + 1` reads as
+> `i !== 0` — which drops the icon id itself and leaves `target` undefined. The
+> Iconify path could then never receive its argument.
 
 ## Dummy data — a module rendering ahead of its post type
 

@@ -4,39 +4,10 @@
 // | Component: header banner                | //
 // |_________________________________________| //
 
-/**
- * Dismissible promo bar, top of <header>.
- *
- * Design anchors: 1920x63 and 390x78. Both reconcile from type and padding
- * alone -- 18 x 1.5 + (18 x 2) = 63, and 12 x 1.5 + (40 + 20) = 78 -- which is
- * why no height is declared anywhere below. Longer editor copy wraps and grows
- * the bar instead of being clipped.
- *
- * Mobile values are emitted at the 480 anchor from a 390 comp, so every one is
- * stored as design x 480/390 (1.230769) with the raw design value in a comment.
- * NOT the 1.28 in CLAUDE.md -- that assumes a 375 comp and would render ~5%
- * small here.
- *
- * No fade attribute. CLAUDE.md makes the scroll fade the default and asks for a
- * reason when it is absent: this is the topmost element on the page, fully above
- * the fold, so tagging it would hide an LCP-region element behind opacity: 0
- * until GSAP boots.
- */
+// see docs/components/header-banner.md
 .drg-header-banner {
     background-color: color( grey, 10 );
 
-    /**
-     * Pattern arrives as a custom property set inline by index.php, not an <img>.
-     *
-     * It is decoration rather than content, so it wants no alt text and no place
-     * in the DOM. Putting it here also deletes the stacking problem an <img>
-     * created: no z-index on the content, and no overflow: hidden to clip it,
-     * because a background cannot escape its own box.
-     *
-     * The `none` fallback covers an empty image field -- no value means no custom
-     * property, so nothing paints. That is the same outcome the $fallback = false
-     * argument used to buy, without needing the argument.
-     */
     background-image: var(--drg-banner-bg, none);
     background-position: center;
     background-repeat: no-repeat;
@@ -51,46 +22,14 @@
         @include vwUnit(padding-top, 18, 49.23);     // 40 @390
         @include vwUnit(padding-bottom, 18, 24.62);  // 20 @390
 
-        /**
-         * Reserves the absolutely positioned close button.
-         *
-         * The button is out of flow, so the row has no idea it exists -- without
-         * this the text slides underneath it, and the ellipsis below would
-         * truncate against the bar edge rather than against the button.
-         *
-         * Symmetric so the centred text stays optically centred: padding on one
-         * side only would shift it. 42 = close 32 + gap 10 on desktop, 36 = close
-         * 26 + gap 10 at 390.
-         */
         @include vwUnit(padding-inline, 42, 44.31);  // 36 @390
 
-        /**
-         * Content runs flush left below 480, so the left reserve is dead space --
-         * but only here. Between 481 and 767 the row is still centred and still
-         * needs both sides to stay centred.
-         *
-         * Must come after the vwUnit include above, which emits its own 480
-         * query; source order is what lets this win.
-         */
         @media screen and (max-width: 480px) {
             justify-content: flex-start;
             padding-left: 0;
         }
     }
 
-    /**
-     * Truncates to one line rather than wrapping.
-     *
-     * banner_text is a free text field with no character limit, so the copy can
-     * be any length. No width is calculated anywhere -- the browser truncates
-     * against whatever space the row leaves after the gap, the link and the
-     * close-button reserve, at every viewport.
-     *
-     * min-width: 0 is the load-bearing line. A flex item defaults to
-     * min-width: auto, which refuses to shrink below its content's intrinsic
-     * width -- with nowrap that is the whole sentence, so the text would overflow
-     * the bar and text-overflow would never fire.
-     */
     &__text {
         @include typo(banner-text);
         margin: 0;
@@ -100,11 +39,6 @@
         white-space: nowrap;
     }
 
-    /**
-     * The call to action never truncates -- the sentence gives way instead.
-     * Without this the link is an equally valid shrink target and both would
-     * collapse together.
-     */
     &__link {
         @include typo(banner-text);
         flex-shrink: 0;
@@ -113,23 +47,9 @@
     &__close {
         position: absolute;
 
-        /**
-         * Aligned to the TEXT line, not the bar.
-         *
-         * padding-top + half the line box: desktop 18 + 13.5, mobile 40 + 9.
-         * They differ because mobile padding is asymmetric (40/20), which puts
-         * the text 10px below the bar's centre -- measuring the comp confirms
-         * the circle sits at y 48.5 where the bar centre is 38.5.
-         */
         @include vwUnit(top, 31.5, 60.31);           // 49 @390
         transform: translateY(-50%);
 
-        /**
-         * An absolutely positioned child resolves against its containing block's
-         * PADDING box, so right: 0 would sit flush against the bar edge rather
-         * than the container's content edge. Matching $containerPadding lines the
-         * button up with the gutter without needing a wrapper element.
-         */
         right: $containerPadding;
 
         @include vwUnit(width, 32, 32);              // 26 @390

@@ -36,7 +36,6 @@ function drg_admin_color_scheme(){
 	// Website COlor Scheme
 	wp_admin_css_color( 'website_color_scheme', __( 'Website Color Scheme' ),
 		$theme_dir . '/assets/css/admin/colorScheme-client.css',
-		// array( '#242e3b', '#fff', '#d54e21' , '#703bf7')
 	);
 }
 add_action('admin_init', 'drg_admin_color_scheme');
@@ -229,14 +228,6 @@ function drg_menu_setup() {
     add_theme_support('menus');
     register_nav_menu('main_menu', 'Main Navbar');
 
-    /**
-     * The right-hand slot in the navbar -- a Contact Us button in this design.
-     *
-     * A menu location rather than hardcoded markup so the client can change the
-     * label and target without a deploy. Named "right area" rather than "cta"
-     * because the slot can later take a phone number or language switcher
-     * without the name going stale.
-     */
     register_nav_menu('main_menu_right', 'Main Navbar - Right Area');
 
     register_nav_menu('footer', 'Footer Navbar');
@@ -249,12 +240,6 @@ add_action('init', 'drg_menu_setup');
  */
 function drg_change_logo_class($html) {
     $html = str_replace('custom-logo-link', 'navbar-brand', $html);
-    /**
-     * The old value here was `img-responsive` -- a Bootstrap 3 class name that
-     * has had no styles since the theme moved to Bootstrap 5, so it was a no-op.
-     * Replaced with the class the navbar actually styles, which caps the logo's
-     * height (see components/_navbar.scss).
-     */
     $html = str_replace('custom-logo', 'drg-navbar__logo', $html);
     return $html;
 }

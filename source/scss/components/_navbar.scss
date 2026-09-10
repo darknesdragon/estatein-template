@@ -4,51 +4,11 @@
 // | Component: main navbar                  | //
 // |_________________________________________| //
 
-/**
- * Logo left, menu centred, right-area menu pinned right; collapses to logo +
- * hamburger below xl.
- *
- * Design anchors 1920x99 and 390x68, both reconciling from type and padding:
- *   pill  18 x 1.5 + (12 x 2) = 51
- *   bar   51 + (24 x 2)       = 99
- *   bar   24 (logo) + (22 x 2) = 68   on mobile, where the logo is the tallest child
- *
- * Bar padding is 24 rather than the 20 the comp implies, because the agreed
- * 12/20 pill padding makes the pill 51 instead of the comp's 55 -- 24 keeps the
- * bar itself on its designed 99.
- *
- * Unlike the header banner this sits inside .container, not
- * .drg-container-fluid: the comp insets content 162px at 1920, which is the
- * xxxl container (1600) rather than a full-bleed gutter.
- */
+// see docs/components/navbar.md
 .drg-navbar {
     background-color: color( grey, 10 );
     @include vwUnit(padding-block, 16); 
 
-    /**
-     * Toggler and offcanvas close share one treatment: a bare icon button that
-     * inherits currentColor, so hover is the same purple the nav links use.
-     *
-     * Both replace a Bootstrap control whose icon is a background-image SVG with
-     * its colour baked in (.navbar-toggler-icon, .btn-close) -- unreachable from
-     * `color`, which is why the earlier `.btn-close { color: white }` did
-     * nothing. See header.php for the markup.
-     *
-     * Sized by FONT-SIZE, because template-parts/icon.php inlines the SVG at
-     * width/height 1em. Heroicons do not fill their viewBox though, so the two
-     * are not the same number:
-     *
-     *   bars-3-bottom-right  M3.75..h16.5 = 16.5 + 1.5 stroke = 18 of 24
-     *                        -> visible = 0.75 x font-size
-     *   x-mark               M6 18L18 6   = 12   + 1.5 stroke = 13.5 of 24
-     *                        -> visible = 0.5625 x font-size
-     *
-     * The comp's hamburger is 22px wide at 390, hence 22 / 0.75 = 29.33.
-     *
-     * vwUnit() rather than vwStacked(): these are hidden above xl, not merely
-     * restyled, and vwUnit already emits an unconditional base plus all four
-     * anchors, so there is no 768-1199 gap for vwStacked to fill.
-     */
     &__toggler,
     &__close {
         display: flex;
@@ -56,12 +16,6 @@
         justify-content: center;
         padding: 0;
 
-        /**
-         * A fixed 44px floor, not a design dimension -- WCAG 2.5.5 / the mobile
-         * HIG minimum for a touch target. Left in px on purpose: a target that
-         * scaled with the viewport would drop below the floor on exactly the
-         * small screens that need it most.
-         */
         min-width: 44px;
         min-height: 44px;
 
@@ -72,14 +26,6 @@
         cursor: pointer;
         @include transition(all .3s ease);
 
-        /**
-         * Shared hover across every filled control in the theme: purple 75 with
-         * DARK text.
-         *
-         * White on purple 75 is only 2.85:1 -- below AA. Flipping the label to
-         * grey/08 lifts the same fill to 6.46:1, which is why the pair moves
-         * together and neither half should be changed alone.
-         */
         @include fullState {
             color: color( grey, 08 );
             background-color: color( purple, 75 );
@@ -94,7 +40,6 @@
     &__toggler {
         @include vwUnit(font-size, 29.33, 36.10);   // 22px glyph @390
 
-        // Bootstrap's own focus ring on .navbar-toggler, replaced by the hover fill
         box-shadow: none;
     }
 
@@ -102,15 +47,6 @@
         @include vwUnit(font-size, 24, 29.54);      // 13.5px glyph @390
     }
 
-    /**
-     * The logo is a Customizer upload, so its intrinsic size and aspect ratio
-     * are whatever the client chose. Capping HEIGHT with width: auto is what
-     * keeps a navbar tidy -- wordmark length varies between clients, height
-     * does not.
-     *
-     * Deliberately not imageRatio(): that mixin locks one aspect ratio, which
-     * would letterbox or squash an upload that does not match it.
-     */
     &__logo {
         @include vwUnit(height, 41, 29.54);      // 24 @390
         width: auto;
@@ -121,30 +57,12 @@
         @include vwUnit(column-gap, 10, 12.31);      // 10 @390
     }
 
-    /**
-     * Centres the main menu in the space the offcanvas row leaves after the
-     * logo. Known seam: that is not quite the viewport centre -- it lands ~14px
-     * right of the comp, because the brand and the right-hand menu sit on
-     * opposite sides of the offcanvas boundary and cannot be made equal-width
-     * flex siblings. Accepted; the simple rule needs nothing unset when the
-     * offcanvas takes over below xl.
-     *
-     * An explicit --main modifier rather than :not(--right): the negation would
-     * have to interpolate the parent selector inside :not(), which reads badly
-     * and breaks the moment another modifier is added.
-     */
     &__menu--main {
         @media (min-width: 1200px) {
             margin-inline: auto;
         }
     }
 
-    /**
-     * WordPress emits <li class="menu-item current-menu-item"><a>, with no
-     * Bootstrap classes. Styling through those native classes avoids
-     * nav_menu_css_class / nav_menu_link_attributes filters -- one less thing to
-     * keep in sync, and everything here is custom-styled anyway.
-     */
     &__menu > li > a {
         @include typo(body-m);
         @include vwUnit(padding-block, 12, 14.77);   // 12 @390
@@ -155,13 +73,6 @@
         text-decoration: none;
         border-radius: 10px;
 
-        /**
-         * Reserved at rest, not added on hover.
-         *
-         * A plain item has no border until hover; introducing one then would
-         * grow the box by 2px and shove every sibling sideways on each pointer
-         * move. Transparent keeps the geometry fixed.
-         */
         border: 1px solid transparent;
 
         @include transition(all .3s ease);
@@ -171,10 +82,6 @@
         }
     }
 
-    /**
-     * Two things wear the pill at rest: the current page, and the right-area
-     * menu, which is a button by design.
-     */
     &__menu > li.current-menu-item > a,
     &__menu--right > li > a {
         background-color: color( grey, 08 );
@@ -188,8 +95,6 @@
         }
     }
 
-    // hover outranks both resting states -- see the toggler above for why the
-    // label goes dark rather than staying white
     &__menu > li > a {
         @include fullState {
             color: color( grey, 08 );
@@ -201,46 +106,17 @@
     &__offcanvas {
         background-color: color( grey, 10 );
 
-        /**
-         * Full-bleed on the phone, a drawer above it. 767 is the theme's own
-         * mobile anchor, so "mobile" means the same thing here as it does in
-         * every vwUnit() call.
-         *
-         * Bootstrap's default 400px covers 768 and up on its own -- only the
-         * full-bleed case needs stating.
-         */
         @media (max-width: 767px) {
-            /**
-             * Drives Bootstrap's own variable rather than overriding `width`.
-             *
-             * .offcanvas-end reads width from var(--bs-offcanvas-width), so
-             * feeding the variable wins wherever that rule is applied instead of
-             * racing it on source order -- and it keeps working if Bootstrap
-             * later adds a higher-specificity width rule.
-             */
             --bs-offcanvas-width: 100%;
 
-            // a left border on a full-bleed panel is just a stray line
             border-left: 0;
         }
     }
 
-    /**
-     * The panel carries no title, so the close button is the only child and
-     * would sit left without this. See header.php: the heading was removed
-     * because the logo is still visible in the bar behind the panel.
-     */
     &__offcanvas-header {
         justify-content: flex-end;
     }
 
-    /**
-     * Stacked by default, a row once the offcanvas flattens into the bar at xl.
-     *
-     * Written mobile-first here rather than with vwStacked(), which carries its
-     * own media query and so must never be nested inside one -- the row-gap only
-     * applies while the panel is a column, which is exactly a nested case.
-     */
     &__offcanvas-body {
         display: flex;
         flex-direction: column;

@@ -14,33 +14,12 @@ $gunmetal          : #242e3b;
 $dark-jungle-green : #161d25;
 $charcoal          : #36404d;
 
-/**
- * Brand colours, derived from the project palette rather than written literal.
- *
- * Named for their ROLE, not their hue -- the neutrals above keep the
- * colour-name convention because they are literal hex, but these follow
- * $color, so a hue name here would go stale the moment the palette changes.
- *
- * Hover and active states come through colorMod() rather than a palette shade,
- * because the purple ramp runs 60..99 -- LIGHTER as the key rises -- and these
- * states need to go DARKER than the base. Same reason $link-color in
- * _adminConfig.scss is written colorMod($primary, -30%).
- */
 $brand             : color( purple );
 $brand-hover       : colorMod( color( purple ), -20% );
 $brand-dark        : colorMod( color( purple ), -35% );
 $brand-link        : colorMod( color( purple ), -30% );
 $brand-link-hover  : color( purple );
 
-/**
- * $brand as a bare hex for the checkbox SVG data-URI below, which cannot take a
- * colour object -- '#' has to be percent-encoded inside the URI, so it is
- * stripped here and re-added as %23 at the call site.
- *
- * Derived from $brand, NOT from _adminConfig's $checkMark. That one follows
- * $primary; this scheme is deliberately independent of it (it stayed green
- * while $primary was orange), and borrowing it would couple the two silently.
- */
 $brandCheckMark    : str-replace( meta.inspect( $brand ), '#', '' );
 
 $flame             : #d54e21;
@@ -294,18 +273,6 @@ a,
     box-shadow: inset 0 2px 5px -3px black;
 }
 
-/**
- * Disabled primary button.
- *
- * Keeps the brand background and fades the LABEL, which is what WordPress core
- * does (rgba white at 40% over the primary colour). The previous rule painted a
- * dark brand colour on a brand background -- 1.28:1, effectively unreadable, and
- * the Customizer ships its Save button disabled, so that was the first thing you
- * hit there.
- *
- * Fading the text rather than greying the whole control also keeps a disabled
- * primary distinguishable from a disabled secondary.
- */
 .wp-core-ui .button-primary[disabled], .wp-core-ui .button-primary:disabled, .wp-core-ui .button-primary.button-primary-disabled, .wp-core-ui .button-primary.disabled {
     color: rgba($white, .4) !important;
     background: $brand !important;
@@ -769,43 +736,10 @@ div#wp-responsive-toggle a:before {
 .mce-container.mce-menu .mce-menu-item-preview.mce-active {
     background: $brand;
 }
-/**
- * Toolbar Publish Button plugin.
- *
- * The plugin paints its button from its own setting (Settings -> Toolbar
- * Publish Button), default #0073AA, injected at runtime as a <style> tag from
- * js/tpb.js -- so it does not follow this scheme on its own.
- *
- * Its selector scores (0,2,3,1). Prefixing `body` makes this (0,2,3,2), which
- * wins on specificity alone -- no !important needed, and none would work
- * reliably anyway against a tag injected after this stylesheet.
- *
- * Only the background is overridden: the plugin already sets the label to #fff
- * and handles hover with filter: brightness(1.1), both of which read correctly
- * on the brand colour.
- *
- * Trade-off: this beats the plugin's own colour picker, so changing that
- * setting will appear to do nothing while this rule is here.
- */
 body #wpadminbar:not(.mobile) #wp-toolbar li.wpuxss-tpb > .ab-item {
     background-color: $brand;
 }
 
-/**
- * Admin bar site icon.
- *
- * Core paints a light grey plate behind the favicon
- * (wp-includes/css/admin-bar.css -- "matching my-account (user avatar) node's
- * background"). Deliberate on their part, but it frames a transparent or dark
- * favicon with a grey slab against the dark bar.
- *
- * `body` prefix takes this to (0,2,2,1) against core's (0,2,2,0), so it wins on
- * specificity rather than on load order -- the colour scheme stylesheet is not
- * guaranteed to print after the concatenated core styles from load-styles.php.
- *
- * Background only. Core's mobile rule repositions the icon without re-setting
- * background, so this one declaration covers every breakpoint.
- */
 body #wpadminbar #wp-admin-bar-site-name > .ab-item .site-icon {
     background: transparent;
 }

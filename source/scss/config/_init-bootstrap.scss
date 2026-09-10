@@ -6,32 +6,8 @@
 
 // 2. Include any default variable overrides here
 
-/**
- * Align Bootstrap's grid gutter with $containerPadding.
- *
- * Bootstrap 5 defaults $grid-gutter-width to 1.5rem (24px), which puts .col
- * padding at 12px -- the 30px figure people remember is Bootstrap 4. Doubling
- * $containerPadding puts .col back at 15px, and because Bootstrap derives
- * $container-padding-x: $grid-gutter-width * .5, .container lands on 15 too.
- *
- * Must sit BEFORE the variables import below -- Bootstrap declares it !default,
- * so an override afterwards would be ignored.
- */
 $grid-gutter-width: var.$containerPadding * 2;
 
-/**
- * Project defaults: dark ground, light text, Urbanist.
- *
- * Set as Bootstrap variables rather than a `body { }` rule because Bootstrap
- * re-exports them as --bs-body-color / --bs-body-bg, and its COMPONENTS build on
- * those. The offcanvas is the one that bites: it declares
- * --bs-offcanvas-color: var(--bs-body-color), and that offcanvas is the mobile
- * nav in header.php -- a plain body rule would leave the mobile menu as dark
- * text on white while the rest of the site is dark.
- *
- * Doing it here also keeps each value in ONE place: reboot styles body from the
- * same variable, so no separate rule is needed and none can drift.
- */
 $body-bg: func.color( grey, 08 );
 $body-color: func.color( white );
 $font-family-base: var.$fontPrimary;

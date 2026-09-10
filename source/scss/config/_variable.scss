@@ -23,20 +23,6 @@ $maxViewport: 1920;
 // keep in sync with the google font enqueued in inc/functions-style-script.php
 $fontPrimary: 'Urbanist', sans-serif;
 
-/**
- * Horizontal gutter, shared by .drg-container-fluid and Bootstrap's grid.
- *
- * A literal px and CONSTANT at every viewport -- a deliberate exception to the
- * "every dimension goes through vwUnit()" rule. This has to stay equal to half
- * Bootstrap's $grid-gutter-width, and Bootstrap emits that at a fixed size, so a
- * value that scaled with the viewport would drift out of alignment with .row and
- * .col everywhere except the anchor width.
- *
- * _init-bootstrap.scss reads it as $grid-gutter-width: $containerPadding * 2, so
- * .col padding, .container padding and .drg-container-fluid padding all resolve
- * from this one number. Bootstrap 5 ships 1.5rem (24px) by default, which is why
- * that override exists at all.
- */
 $containerPadding: 15px;
 
 $desktopBreakpoints: (
@@ -49,21 +35,6 @@ $mobileBreakpoints: (
     480
 );
 
-/**
- * Estatein palette.
- *
- * Shade keys are the HSL LIGHTNESS of the colour, which is why the ramps read
- * 08..60 for grey and 60..99 for purple rather than 100..900 -- grey 50 is
- * literally hsl(0, 0%, 50%). Reading a key tells you how light the result is.
- *
- * Keys are bare numbers, not strings. Sass normalises 08 to 8 on both the write
- * and the read, so color(grey, 08) and color(grey, 8) both resolve. Quoting them
- * would make color(purple, 60) -- the natural thing to type -- return null, and
- * colorMod() fatals on null rather than warning.
- *
- * white and grey are separate ramps, not one: white carries a faint blue tint
- * (hue 240, sat ~6%) while grey is pure neutral (sat 0).
- */
 $color: (
     white: (
         default: #FFFFFF,
@@ -111,18 +82,6 @@ $color: (
 
 // OPTIONAL - end
 
-/**
- * Type scale.
- *
- * Holds ONLY sizes a component actually uses -- add a key when a component
- * needs it, do not park speculative sizes here. Every key emits a
- * --tdfs-<name> custom property, an %fs-<name> placeholder and an .fs-<name>
- * class, so an unused key is dead weight in every stylesheet.
- *
- * Desktop values are literal design pixels from the 1920 comp. Mobile values
- * are emitted at the 480 anchor, so store design * 1.28 and record the intent:
- *     mobile: ( font-size: 25.6 )  // 20 @375
- */
 $fontSizes: (
     banner-text: (
         desktop: (
@@ -130,23 +89,10 @@ $fontSizes: (
             font-weight: 500,
             line-height: 1.5
         ),
-        // font-size only -- createFontExtend() iterates just the keys present
-        // here, so weight and line-height fall through from desktop
         mobile: (
             font-size: 14.77 // 12 @390
         )
     ),
-    /**
-     * Body copy: nav links, button labels, section descriptions, stat labels.
-     *
-     * Was `nav-link` until the main banner needed the identical size for its
-     * description and stat labels. Renamed rather than duplicated -- every key
-     * emits a --tdfs- variable, an %fs- placeholder and an .fs- class, so two
-     * byte-identical keys are pure waste and can silently drift apart.
-     *
-     * Still identical to banner-text on desktop; those two diverge on mobile
-     * (16 vs 12), which is why they stay separate.
-     */
     body-m: (
         desktop: (
             font-size: 18,
@@ -167,10 +113,6 @@ $fontSizes: (
             font-size: 34.46 // 28 @390
         )
     ),
-    /**
-     * Named for the thing it sizes, not a heading level -- it never renders as
-     * a heading, so calling it heading-2 would mislead every later reader.
-     */
     stats-number: (
         desktop: (
             font-size: 40,
